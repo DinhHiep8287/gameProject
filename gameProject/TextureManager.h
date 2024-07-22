@@ -20,18 +20,12 @@ public:
     // vẽ 1 frame 
     void draw(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed);
 
-    // Vẽ từng khung hình của một Sprite 
     void drawFrame(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip);
 
     float textureWidth(std::string id);
     
     float textureHeight(std::string id);
     
-    /*void drawHitbox(SDL_Rect* hitbox, SDL_Renderer* ren)
-    {
-        SDL_Rect tempRect = { hitbox->x - Camera::getInstance()->pos.x , hitbox->y - Camera::getInstance()->pos.y , hitbox->w , hitbox->h };
-        SDL_RenderDrawRect(ren, &tempRect);
-    }*/
 
 };
 

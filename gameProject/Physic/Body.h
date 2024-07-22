@@ -13,18 +13,23 @@ private:
     Vector2D _force;
     Vector2D _friction;
     SDL_Rect _rectShape;
-    Vector2D _position;
+    Vector2D* _position;
     Vector2D _velocity;
     Vector2D _acceleration;
     bool _isGrounded;
 
 public:
     Body()
-        : _mass(MASS), _gravity(GRAVITY), _force(0, 0), _friction(0, 0), _rectShape{ 0,0,0,0 }, _velocity(0, 0), _acceleration(0, 0), _isGrounded(true)
+        : _mass(MASS), _gravity(GRAVITY), _force(0, 0), _friction(0, 0), _rectShape{ 0,0,0,0 }, _position(new Vector2D(0, 0)), _velocity(0, 0), _acceleration(0, 0), _isGrounded(true)
     {
     }
 
-    //Setter
+    ~Body()
+    {
+        delete _position;
+    }
+
+    // Setter
     inline void setMass(float mass) { _mass = mass; }
     inline void setGravity(float gravity) { _gravity = gravity; }
     inline void setForce(const Vector2D& force) { _force = force; }
@@ -35,25 +40,25 @@ public:
     inline void unsetFriction() { _friction = Vector2D(0, 0); }
     void setPosition(float x, float y)
     {
-        _position.setX(x);
-        _position.setY(y);
+        _position->setX(x);
+        _position->setY(y);
         _rectShape.x = static_cast<int>(x);
         _rectShape.y = static_cast<int>(y);
     }
 
-    //Getter
+    // Getter
     float getMass() const { return _mass; }
     SDL_Rect getRectShape() const { return _rectShape; }
     Vector2D getAcceleration() const { return _acceleration; }
     Vector2D getVelocity() const { return _velocity; }
-    Vector2D getPosition() const { return _position; }
+    Vector2D* getPosition() const { return _position; }
 
     // Method to jump
     void jump()
     {
         if (_isGrounded)
         {
-            _velocity.setY(-JUMP_FORCE); 
+            _velocity.setY(-JUMP_FORCE);
             _isGrounded = false;
         }
     }
@@ -83,33 +88,36 @@ public:
             _velocity.setX(_velocity.getX() + _acceleration.getX() * dt);
         }
 
-            _velocity.setY(_velocity.getY() + _acceleration.getY() * dt);
+        _velocity.setY(_velocity.getY() + _acceleration.getY() * dt);
 
+        // Giới hạn vận tốc tối đa
+        if (_velocity.getX() > MAX_VELOCITY_X) _velocity.setX(MAX_VELOCITY_X);
+        if (_velocity.getX() < -MAX_VELOCITY_X) _velocity.setX(-MAX_VELOCITY_X);
+        if (_velocity.getY() > MAX_VELOCITY_Y) _velocity.setY(MAX_VELOCITY_Y);
+        if (_velocity.getY() < -MAX_VELOCITY_Y) _velocity.setY(-MAX_VELOCITY_Y);
 
-        // Cập nhật vị trí
-        _position = _position + (_velocity * dt);
-        _rectShape.x = static_cast<int>(_position.getX());
-        _rectShape.y = static_cast<int>(_position.getY());
+        *_position = *_position + (_velocity * dt);
 
-        // Đảm bảo đối tượng không rơi qua mặt đất
-        if (_rectShape.y > 300) 
+        if (_position->getY() > 300)
         {
-            _rectShape.y = 300;
-            _velocity.setY(0); 
-            _isGrounded = true; 
+            _position->setY(300);
+            _velocity.setY(0);
+            _isGrounded = true;
         }
+
+        _rectShape.x = static_cast<int>(_position->getX());
+        _rectShape.y = static_cast<int>(_position->getY());
     }
 
     void print() const
     {
-
         std::cout << "Mass: " << _mass << std::endl;
         std::cout << "Gravity: " << _gravity << std::endl;
         std::cout << "Force: (" << _force.getX() << ", " << _force.getY() << ")" << std::endl;
         std::cout << "Friction: (" << _friction.getX() << ", " << _friction.getY() << ")" << std::endl;
-        std::cout << "Position: (" << _rectShape.x << ", " << _rectShape.y << ")" << std::endl;
+        std::cout << "PositionRect: (" << _rectShape.x << ", " << _rectShape.y << ")" << std::endl;
+        std::cout << "PositionPointer: (" << _position->getX() << ", " << _position->getY() << ")" << std::endl;
         std::cout << "Velocity: (" << _velocity.getX() << ", " << _velocity.getY() << ")" << std::endl;
         std::cout << "Acceleration: (" << _acceleration.getX() << ", " << _acceleration.getY() << ")" << std::endl;
-        
     }
 };

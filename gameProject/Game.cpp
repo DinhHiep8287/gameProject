@@ -12,6 +12,7 @@ Body body;
 void Game::init()
 {
     Engine::initSDL(window, renderer);
+    Camera::getInstance()->setPoint(body.getPosition());
 }
 
 void Game::quit()
@@ -39,10 +40,10 @@ void Game::update()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
     SDL_Rect rect = body.getRectShape();
-    Camera::getInstance()->setPoint(body.getPosition());
-    SDL_Rect fillRect = { body.getPosition().getX() - Camera::getInstance()->getPoint().getX(), body.getPosition().getY() - Camera::getInstance()->getPoint().getY() , 20, 20}; // Một hình chữ nhật đại diện cho Body
+    //Camera::getInstance()->setPoint(body.getPosition());
+    SDL_Rect fillRect = { body.getPosition()->getX() - Camera::getInstance()->position.getX(), body.getPosition()->getY() - Camera::getInstance()->position.getY() , 20, 20}; // Một hình chữ nhật đại diện cho Body
     Camera::getInstance()->update(deltaTime);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Màu xanh
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
     SDL_RenderFillRect(renderer, &fillRect);
     SDL_RenderPresent(renderer);
 

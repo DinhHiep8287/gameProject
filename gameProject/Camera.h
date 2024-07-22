@@ -12,13 +12,13 @@ public:
     {
         return instance = (instance != nullptr) ? instance : new Camera();
     }
-    Vector2D point;
+    Vector2D* pPosition;
     SDL_Rect viewBox;
-
+    Vector2D position;
     SDL_Rect getViewBox();
-    Vector2D getPoint();
+    Vector2D* getPoint();
 
-    void setPoint(Vector2D _point);
+    void setPoint(Vector2D* _point);
     void update(float dt);
 };
 

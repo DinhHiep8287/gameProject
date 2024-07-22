@@ -142,7 +142,9 @@
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="FrameRateController.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Physic\constants.h" />
     <ClInclude Include="Input.h" />

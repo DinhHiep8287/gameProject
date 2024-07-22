@@ -10,19 +10,19 @@ SDL_Rect Camera::getViewBox() {
     return viewBox;
 }
 
-Vector2D Camera::getPoint() {
-    return point;
+Vector2D* Camera::getPoint() {
+    return pPosition;
 }
 
 
-void Camera::setPoint(Vector2D _point) {
-    point = _point;
+void Camera::setPoint(Vector2D* _point) {
+    pPosition = _point;
 }
 
 void Camera::update(float dt) {
     // đặt tọa độ của "box" điểm nhìn 
-    viewBox.x = static_cast<int>(point.getX()) - SCREEN_WIDTH / 2; // từ trung tâm trừ đi độ dài màn hình / 2
-    viewBox.y = static_cast<int>(point.getY()) - SCREEN_HEIGHT / 2; // từ trung tâm trừ đi độ cao màn hình / 2
+    viewBox.x = static_cast<int>(pPosition->getX()) - SCREEN_WIDTH / 2; // từ trung tâm trừ đi độ dài màn hình / 2
+    viewBox.y = static_cast<int>(pPosition->getY()) - SCREEN_HEIGHT / 2; // từ trung tâm trừ đi độ cao màn hình / 2
     // Nếu nhỏ hơn 0 chứng tỏ đã đến giới hạn của map, không cuộn camera nữa
     if (viewBox.x < 0) {
         viewBox.x = 0;
@@ -39,5 +39,5 @@ void Camera::update(float dt) {
     }
 
     // Đặt tọa độ pos điểm nhìn
-    pos = Vector2D(static_cast<float>(viewBox.x), static_cast<float>(viewBox.y));
+    position = Vector2D(static_cast<float>(viewBox.x), static_cast<float>(viewBox.y));
 }
