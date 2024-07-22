@@ -1,6 +1,6 @@
 #pragma once
 #include "SDL.h"
-#include "TextureManager.h"
+#include "AssetManager.h"
 class Animation
 {
 public: std::string id;
@@ -35,6 +35,6 @@ public: std::string id;
 
       void DrawAnimation(std::string id, float x, float y, int width, int height, SDL_RendererFlip flip)
       {
-          TextureManager::GetInstance()->drawFrame(id, x, y, width, height, row, frame, flip);
+          AssetManager::GetInstance()->drawFrame(id, x, y, width, height, row, frame, flip);
       }
 };

@@ -1,7 +1,7 @@
-﻿#include "TextureManager.h"
-TextureManager* TextureManager::instance = nullptr;
+﻿#include "AssetManager.h"
+AssetManager* AssetManager::instance = nullptr;
 
-bool TextureManager::load(std::string id, std::string fileName)
+bool AssetManager::load(std::string id, std::string fileName)
 {
     SDL_Surface* surface = IMG_Load(fileName.c_str());
     if (surface == nullptr)
@@ -15,15 +15,16 @@ bool TextureManager::load(std::string id, std::string fileName)
         SDL_Log(" Fail to load Texture from surface : ", SDL_GetError());
     }
     _textureMap[id] = texture;
+    std::cout << "load thanh cong: " << fileName << std::endl;
     return true;
 }
-void TextureManager::drop(std::string id)
+void AssetManager::drop(std::string id)
 {
     SDL_DestroyTexture(_textureMap[id]);
     _textureMap.erase(id);
 }
 
-void TextureManager::draw(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed)
+void AssetManager::draw(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed)
 {
     SDL_Rect srcrect = { 0 , 0 , width , height };
     SDL_Rect dstrect = { x - Camera::getInstance()->position.getX() * paralaxSpeed , y - Camera::getInstance()->position.getY() * paralaxSpeed , width , height };
@@ -31,7 +32,7 @@ void TextureManager::draw(std::string id, float x, float y, float width, float h
     SDL_RenderCopyEx(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect, 0, NULL, flip);
 }
 
-void TextureManager::drawFrame(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip)
+void AssetManager::drawFrame(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip)
 {
     // Tọa độ của 1 source frame sẽ được xác định bởi x = Chiều Dài 1 frame * thứ tự frame ; y = Chiều cao 1 frame * thứ tự cột
     SDL_Rect srcrect = { width * frame , height * row , width , height };
@@ -39,7 +40,7 @@ void TextureManager::drawFrame(std::string id, float x, float y, float width, fl
     SDL_RenderCopyEx(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect, 0, NULL, flip);
 }
 
-float TextureManager::textureWidth(std::string id)
+float AssetManager::textureWidth(std::string id)
 {
     SDL_Texture* texture = _textureMap[id];
     SDL_Rect rect1;
@@ -47,7 +48,7 @@ float TextureManager::textureWidth(std::string id)
     return rect1.w;
 }
 
-float TextureManager::textureHeight(std::string id)
+float AssetManager::textureHeight(std::string id)
 {
     SDL_Texture* texture = _textureMap[id];
     SDL_Rect rect1;
