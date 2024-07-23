@@ -6,13 +6,13 @@ bool AssetManager::load(std::string id, std::string fileName)
     SDL_Surface* surface = IMG_Load(fileName.c_str());
     if (surface == nullptr)
     {
-        SDL_Log(" Fail to load Texture : ", fileName.c_str(), SDL_GetError());
+        std::cout << "load khong thanh cong: " << fileName << std::endl;
         return false;
     }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::GetInstance()->renderer, surface);
     if (texture == nullptr)
     {
-        SDL_Log(" Fail to load Texture from surface : ", SDL_GetError());
+        std::cout << "load khong thanh cong: " << fileName << std::endl;
     }
     _textureMap[id] = texture;
     std::cout << "load thanh cong: " << fileName << std::endl;

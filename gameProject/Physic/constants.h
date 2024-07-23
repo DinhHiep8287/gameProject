@@ -1,11 +1,11 @@
 ﻿#pragma once
-
+#include <map>
 
 const int SIZE = 32;
 
 // Screen dimensions
-const int NUM_SCREEN_X = 30;
-const int NUM_SCREEN_Y = 30;
+const int NUM_SCREEN_X = 32;
+const int NUM_SCREEN_Y = 19;
 const int SCREEN_WIDTH = NUM_SCREEN_X * SIZE;
 const int SCREEN_HEIGHT = NUM_SCREEN_Y * SIZE;
 
@@ -25,22 +25,35 @@ const float MAX_VELOCITY_X = 40.0f;
 const float MAX_VELOCITY_Y = 40.0f; 
 
 
-
 //direction
-
 enum dir
 {
 	LEFT, RIGHT
 };
 
 
-// Background 
-const std::string backgroundPath1 = "Assets//Background//Layers//1.png";
-const std::string backgroundPath2 = "Assets//Background//Layers//2.png";
-const std::string backgroundPath3 = "Assets//Background//Layers//3.png";
-const std::string backgroundPath4 = "Assets//Background//Layers//4.png";
-const std::string backgroundPath5 = "Assets//Background//Layers//5.png";
+// Background Path
+const std::map<std::string, std::string> backgroundPaths = {
+    {"background_1", "Assets//Background//Layers//1.png"},
+    {"background_2", "Assets//Background//Layers//2.png"},
+    {"background_3", "Assets//Background//Layers//3.png"},
+    {"background_4", "Assets//Background//Layers//4.png"},
+    {"background_5", "Assets//Background//Layers//5.png"}
+};
+
 const int backgroundWidth = 4028;
 const int backgroundHeight = 800;
 
-//
+// Texture Path
+    // Knight
+    const std::map<std::string, std::string> knightTexturePaths = {
+    {"KnightIdle", "Assets//Knight//idle.png"},
+    {"KnightRun", "Assets//Knight//Run.png"},
+    {"KnightAttack", "Assets//Knight//Attack.png"},
+    {"KnightJump", "Assets//Knight//Jump.png"},
+    {"KnightFall", "Assets//Knight//Fall.png"},
+    {"KnightTakeHit", "Assets//Knight//Take Hit.png"},
+    {"KnightDie", "Assets//Knight//Death.png"},
+    {"KnightDead", "Assets//Knight//Dead.png"}
+    };
+

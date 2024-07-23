@@ -3,9 +3,7 @@
 #include <vector>
 #include <fstream>
 #include "Tile.h"
-
-const int MAP_WIDTH = 128;
-const int MAP_HEIGHT = 28;
+#include "../Physic/constants.h"
 
 class Layer {
 public:

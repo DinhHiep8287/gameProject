@@ -1,7 +1,7 @@
 ﻿#include "Game.h"
 #include "FrameRateController.h"
 
-const int FPS = 120;
+const int FPS = 60;
 
 int main(int argc, char* argv[]) {
     //Khởi tạo

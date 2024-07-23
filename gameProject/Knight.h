@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Physic/constants.h"
+#include "Input.h"
 
 const float knightMaxHealth = 100.0f;
 const dir defaultDirection = RIGHT;

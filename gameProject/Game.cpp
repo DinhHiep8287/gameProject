@@ -5,18 +5,18 @@
 #include "Physic/constants.h"
 #include "Camera.h"
 #include "AssetManager.h"
+#include "Knight.h"
 
 Game* Game::instance = nullptr;
 
-Body body;
+Body testBody;
 
+Knight testKnight("KnightIdle", 0, 0, 100, 200, MASS);
 
 void initBackground() {
-    AssetManager::GetInstance()->load("background_1", backgroundPath1);
-    AssetManager::GetInstance()->load("background_2", backgroundPath2);
-    AssetManager::GetInstance()->load("background_3", backgroundPath3);
-    AssetManager::GetInstance()->load("background_4", backgroundPath4);
-    AssetManager::GetInstance()->load("background_5", backgroundPath5);
+    for (const auto& pair : backgroundPaths) {
+        AssetManager::GetInstance()->load(pair.first, pair.second);
+    }
 }
 
 void renderBackground() {
@@ -27,51 +27,60 @@ void renderBackground() {
     AssetManager::GetInstance()->renderBackground("background_5", 200, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.9);
 }
 
+void initKnightTexture() {
+    for (const auto& pair : knightTexturePaths) {
+        AssetManager::GetInstance()->load(pair.first, pair.second);
+    }
+}
+
+void renderTest() {
+    // init test Body
+    SDL_Rect fillRect = { testBody.getPosition()->getX() - Camera::getInstance()->position.getX(), testBody.getPosition()->getY() - Camera::getInstance()->position.getY() , 20, 20 }; // Một hình chữ nhật đại diện cho Body
+    SDL_SetRenderDrawColor(Game::GetInstance()->renderer, 0, 0, 255, 255);
+    SDL_RenderFillRect(Game::GetInstance()->renderer, &fillRect);
+}
+
 void Game::init()
 {
     Engine::initSDL(window, renderer);
     initBackground();
-    Camera::getInstance()->setPoint(body.getPosition());
-}
+    initKnightTexture();
 
-void Game::quit()
-{
-    running = false;
-    menu = false;
+    Camera::getInstance()->setPoint(testBody.getPosition());
 }
 
 void Game::update()
 {
-    if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
-        body.setForceX(10); 
+    /*if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
+        testBody.setForceX(10); 
     }
     else if (Input::getInstance()->getKeyDown(SDL_SCANCODE_A)) {
-        body.setForceX(-10); 
+        testBody.setForceX(-10); 
     }
     else {
-        body.unsetForce();
+        testBody.unsetForce();
     }
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
-        body.jump();
-    }
+        testBody.jump();
+    }*/
 
-    body.update(deltaTime);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    SDL_RenderClear(renderer);
-    SDL_Rect rect = body.getRectShape();
-    //Camera::getInstance()->setPoint(body.getPosition());
-    SDL_Rect fillRect = { body.getPosition()->getX() - Camera::getInstance()->position.getX(), body.getPosition()->getY() - Camera::getInstance()->position.getY() , 20, 20}; // Một hình chữ nhật đại diện cho Body
+    testBody.update(deltaTime);
+    testKnight.update(deltaTime);
+
     Camera::getInstance()->update(deltaTime);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); 
-    SDL_RenderFillRect(renderer, &fillRect);
-    SDL_RenderPresent(renderer);
 
-    //body.print();
 }
 
 void Game::render()
 {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+
     renderBackground();
+
+    renderTest();
+
+    testKnight.render();
 
     SDL_RenderPresent(renderer);
 }
@@ -87,3 +96,10 @@ void Game::cleanSDL()
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+
+void Game::quit()
+{
+    running = false;
+    menu = false;
+}
+
