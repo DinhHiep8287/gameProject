@@ -18,9 +18,11 @@ public:
 
     void drop(std::string id);
 
-    void draw(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed);
+    void renderBackground(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed);
 
-    void drawFrame(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip);
+    void renderObject(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip);
+
+    void renderObject(std::string id, float textureX, float textureY, float width, float height, float mapX, float mapY);
 
     float textureWidth(std::string id);
     

@@ -139,7 +139,6 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="AssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,9 +147,11 @@
     <ClInclude Include="FrameRateController.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Knight.h" />
+    <ClInclude Include="Map\MapData\Layer.h" />
+    <ClInclude Include="Map\MapData\Tile.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Physic\constants.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Physic\Body.h" />
     <ClInclude Include="Physic\Vector2D.h" />
     <ClInclude Include="AssetManager.h" />

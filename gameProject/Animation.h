@@ -35,6 +35,6 @@ public: std::string id;
 
       void DrawAnimation(std::string id, float x, float y, int width, int height, SDL_RendererFlip flip)
       {
-          AssetManager::GetInstance()->drawFrame(id, x, y, width, height, row, frame, flip);
+          AssetManager::GetInstance()->renderObject(id, x, y, width, height, row, frame, flip);
       }
 };

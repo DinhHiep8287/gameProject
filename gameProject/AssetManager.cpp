@@ -24,7 +24,7 @@ void AssetManager::drop(std::string id)
     _textureMap.erase(id);
 }
 
-void AssetManager::draw(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed)
+void AssetManager::renderBackground(std::string id, float x, float y, float width, float height, SDL_RendererFlip flip, float paralaxSpeed)
 {
     SDL_Rect srcrect = { 0 , 0 , width , height };
     SDL_Rect dstrect = { x - Camera::getInstance()->position.getX() * paralaxSpeed , y - Camera::getInstance()->position.getY() * paralaxSpeed , width , height };
@@ -32,12 +32,19 @@ void AssetManager::draw(std::string id, float x, float y, float width, float hei
     SDL_RenderCopyEx(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect, 0, NULL, flip);
 }
 
-void AssetManager::drawFrame(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip)
+void AssetManager::renderObject(std::string id, float x, float y, float width, float height, int row, int frame, SDL_RendererFlip flip)
 {
     // Tọa độ của 1 source frame sẽ được xác định bởi x = Chiều Dài 1 frame * thứ tự frame ; y = Chiều cao 1 frame * thứ tự cột
     SDL_Rect srcrect = { width * frame , height * row , width , height };
     SDL_Rect dstrect = { x - Camera::getInstance()->position.getX(), y - Camera::getInstance()->position.getY() , width , height};
     SDL_RenderCopyEx(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect, 0, NULL, flip);
+}
+
+void AssetManager::renderObject(std::string id, float textureX, float textureY, float width, float height, float mapX, float mapY)
+{
+    SDL_Rect srcrect = { textureX , textureY , width , height };
+    SDL_Rect dstrect = { mapX - Camera::getInstance()->position.getX(), mapY - Camera::getInstance()->position.getY() , width , height };
+    SDL_RenderCopy(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect);
 }
 
 float AssetManager::textureWidth(std::string id)
@@ -46,6 +53,7 @@ float AssetManager::textureWidth(std::string id)
     SDL_Rect rect1;
     SDL_QueryTexture(texture, NULL, NULL, &rect1.w, &rect1.h);
     return rect1.w;
+    
 }
 
 float AssetManager::textureHeight(std::string id)

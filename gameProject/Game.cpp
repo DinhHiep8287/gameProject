@@ -10,6 +10,7 @@ Game* Game::instance = nullptr;
 
 Body body;
 
+
 void initBackground() {
     AssetManager::GetInstance()->load("background_1", backgroundPath1);
     AssetManager::GetInstance()->load("background_2", backgroundPath2);
@@ -19,11 +20,11 @@ void initBackground() {
 }
 
 void renderBackground() {
-    AssetManager::GetInstance()->draw("background_1", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.5);
-    AssetManager::GetInstance()->draw("background_2", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.6);
-    AssetManager::GetInstance()->draw("background_3", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.7);
-    AssetManager::GetInstance()->draw("background_4", 0, 50, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.8);
-    AssetManager::GetInstance()->draw("background_5", 200, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.9);
+    AssetManager::GetInstance()->renderBackground("background_1", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.5);
+    AssetManager::GetInstance()->renderBackground("background_2", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.6);
+    AssetManager::GetInstance()->renderBackground("background_3", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.7);
+    AssetManager::GetInstance()->renderBackground("background_4", 0, 50, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.8);
+    AssetManager::GetInstance()->renderBackground("background_5", 200, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.9);
 }
 
 void Game::init()

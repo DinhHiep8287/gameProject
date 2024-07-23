@@ -24,15 +24,15 @@ public:
         body.setMass(mass);
     }
 
-    ~Object()
+    virtual ~Object()
     {
         delete centerPoint;
         delete animation;
     }
 
-    void update(float dt);
-
-    void render();
+    virtual bool update(float dt) = 0; 
+    virtual bool render() = 0; 
+    virtual bool clean() = 0; 
 
     Vector2D getPosition() const { return *body.getPosition(); }
     void setPosition(const Vector2D& pos) { *body.getPosition() = pos; }
@@ -44,5 +44,7 @@ public:
     void setTextureHeight(float height) { textureHeight = height; }
     void setAnimation(Animation* anim) { animation = anim; }
     void setFlip(SDL_RendererFlip f) { flip = f; }
+    std::string getId() const { return id; }
+    void setId(const std::string& textureID) { id = textureID; }
+    SDL_RendererFlip getFlip() const { return flip; }
 };
-
