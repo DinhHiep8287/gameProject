@@ -7,40 +7,34 @@ bool Knight::attack()
 
 bool Knight::update(float dt)
 {
-    std::cout << "Updating Knight" << std::endl;
-
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
-        std::cout << "Moving right" << std::endl;
-        this->getBody().setForceX(10);
+        this->getBody()->setForceX(10);
     }
     else if (Input::getInstance()->getKeyDown(SDL_SCANCODE_A)) {
-        std::cout << "Moving left" << std::endl;
-        this->getBody().setForceX(-10);
+        this->getBody()->setForceX(-10);
     }
     else {
-        this->getBody().unsetForce();
+        this->getBody()->unsetForce();
     }
+
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
-        std::cout << "Jumping" << std::endl;
-        this->getBody().jump();
+        this->getBody()->jump();
     }
 
-    std::cout << "Setting animation" << std::endl;
-    this->getAnimation().SetAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
+    this->setAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
 
-    std::cout << "Updating body" << std::endl;
-    this->getBody().update(dt);
-    std::cout << "Updating animation" << std::endl;
-    this->getAnimation().UpdateAnimation();
-    std::cout << "Knight update completed" << std::endl;
+    this->setBody(100, 100);
+    this->getBody()->update(dt);
+
+    this->getAnimation()->UpdateAnimation();
 
     return false;
 }
 
 bool Knight::render()
 {
-    this->getAnimation().DrawAnimation(this->getTextureID(), this->getPosition().getX(), this->getPosition().getY(),
-                                        this->getTextureWidth(), this->getTextureHeight(), this->getAnimation().flip);
+    this->getAnimation()->DrawAnimation(this->getTextureID(), this->getPosition().getX(), this->getPosition().getY(),
+        this->getTextureWidth(), this->getTextureHeight(), this->getAnimation()->flip);
     return true;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include "Physic/constants.h"
 
@@ -9,6 +10,7 @@ class Engine {
 public:
     static void logSDLError(std::ostream& os, const std::string& msg, bool fatal);
     static void initSDL(SDL_Window*& window, SDL_Renderer*& renderer);
+    static bool initTTF();
     static void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
 };
 

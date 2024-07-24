@@ -3,7 +3,8 @@
 #include <SDL.h>
 #include <iostream>
 #include "constants.h"
-
+#include "../AssetManager.h"
+#include <string>
 
 class Body
 {
@@ -45,9 +46,16 @@ public:
         _rectShape.x = static_cast<int>(x);
         _rectShape.y = static_cast<int>(y);
     }
+    void setRectWidth(float w) { _rectShape.w = w;}
+    void setRectHeight(float h) { _rectShape.h = h;}
+    void setRectX(float x) { _rectShape.x = x; }
+    void setRectY(float y) { _rectShape.y = y; }
 
     // Getter
     float getMass() const { return _mass; }
+    float getGravity() const { return _gravity; }
+    Vector2D getForce() const { return _force; }
+    Vector2D getFriction() const { return _friction; }
     SDL_Rect getRectShape() const { return _rectShape; }
     Vector2D getAcceleration() const { return _acceleration; }
     Vector2D getVelocity() const { return _velocity; }
@@ -98,26 +106,38 @@ public:
 
         *_position = *_position + (_velocity * dt);
 
-        if (_position->getY() > 300)
+        /*if (_position->getY() > 300)
         {
             _position->setY(300);
             _velocity.setY(0);
             _isGrounded = true;
-        }
+        }*/
 
-        _rectShape.x = static_cast<int>(_position->getX());
-        _rectShape.y = static_cast<int>(_position->getY());
     }
 
-    void print() const
+    void renderText(int startX, int startY) const
     {
-        std::cout << "Mass: " << _mass << std::endl;
-        std::cout << "Gravity: " << _gravity << std::endl;
-        std::cout << "Force: (" << _force.getX() << ", " << _force.getY() << ")" << std::endl;
-        std::cout << "Friction: (" << _friction.getX() << ", " << _friction.getY() << ")" << std::endl;
-        std::cout << "PositionRect: (" << _rectShape.x << ", " << _rectShape.y << ")" << std::endl;
-        std::cout << "PositionPointer: (" << _position->getX() << ", " << _position->getY() << ")" << std::endl;
-        std::cout << "Velocity: (" << _velocity.getX() << ", " << _velocity.getY() << ")" << std::endl;
-        std::cout << "Acceleration: (" << _acceleration.getX() << ", " << _acceleration.getY() << ")" << std::endl;
+        SDL_Color color = { 255, 255, 255, 255 }; // White color
+
+        AssetManager* assetManager = AssetManager::GetInstance();
+        std::string fontId = "default"; 
+
+        std::string massText = "Mass: " + std::to_string(this->getMass());
+        std::string gravityText = "Gravity: " + std::to_string(this->getGravity());
+        std::string forceText = "Force: (" + std::to_string(this->getForce().getX()) + ", " + std::to_string(this->getForce().getY()) + ")";
+        std::string frictionText = "Friction: (" + std::to_string(this->getFriction().getX()) + ", " + std::to_string(this->getFriction().getY()) + ")";
+        std::string positionRectText = "PositionRect: (" + std::to_string(this->getRectShape().x) + ", " + std::to_string(this->getRectShape().y) + ")";
+        std::string positionPointerText = "PositionPointer: (" + std::to_string(this->getPosition()->getX()) + ", " + std::to_string(this->getPosition()->getY()) + ")";
+        std::string velocityText = "Velocity: (" + std::to_string(this->getVelocity().getX()) + ", " + std::to_string(this->getVelocity().getY()) + ")";
+        std::string accelerationText = "Acceleration: (" + std::to_string(this->getAcceleration().getX()) + ", " + std::to_string(this->getAcceleration().getY()) + ")";
+
+        assetManager->renderText(Game::GetInstance()->renderer, massText, fontId, color, startX, startY);
+        assetManager->renderText(Game::GetInstance()->renderer, gravityText, fontId, color, startX, startY + 20);
+        assetManager->renderText(Game::GetInstance()->renderer, forceText, fontId, color, startX, startY + 40);
+        assetManager->renderText(Game::GetInstance()->renderer, frictionText, fontId, color, startX, startY + 60);
+        assetManager->renderText(Game::GetInstance()->renderer, positionRectText, fontId, color, startX, startY + 80);
+        assetManager->renderText(Game::GetInstance()->renderer, positionPointerText, fontId, color, startX, startY + 100);
+        assetManager->renderText(Game::GetInstance()->renderer, velocityText, fontId, color, startX, startY + 120);
+        assetManager->renderText(Game::GetInstance()->renderer, accelerationText, fontId, color, startX, startY + 140);
     }
 };

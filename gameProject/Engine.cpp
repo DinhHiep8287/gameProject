@@ -24,6 +24,15 @@ void Engine::initSDL(SDL_Window*& window, SDL_Renderer*& renderer)
     SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
+bool Engine::initTTF()
+{
+    if (TTF_Init() == -1) {
+        std::cerr << "Failed to initialize TTF: " << TTF_GetError() << std::endl;
+        return false;
+    }
+    return true;
+}
+
 void Engine::quitSDL(SDL_Window* window, SDL_Renderer* renderer)
 {
     SDL_DestroyRenderer(renderer);

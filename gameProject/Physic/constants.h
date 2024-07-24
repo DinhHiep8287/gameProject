@@ -44,9 +44,16 @@ const std::map<std::string, std::string> backgroundPaths = {
 const int backgroundWidth = 4028;
 const int backgroundHeight = 800;
 
+//Font Path
+const std::map<std::string, std::string> FONTS_PATHS = {
+    {"default", "Assets//fonts//default.ttf"}
+};
+
+const int DEFAULT_FONT_SIZE = 20;
+
 // Texture Path
     // Knight
-    const std::map<std::string, std::string> knightTexturePaths = {
+    const std::map<std::string, std::string> KNIGHT_TEXTURE_PATHS = {
     {"KnightIdle", "Assets//Knight//idle.png"},
     {"KnightRun", "Assets//Knight//Run.png"},
     {"KnightAttack", "Assets//Knight//Attack.png"},
