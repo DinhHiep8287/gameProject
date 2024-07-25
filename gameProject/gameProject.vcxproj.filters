@@ -83,5 +83,8 @@
     <ClInclude Include="Map\MapData\Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Map\MapData\Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

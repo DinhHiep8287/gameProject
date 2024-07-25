@@ -31,9 +31,28 @@ enum dir
 	LEFT, RIGHT
 };
 
+// Map Data
+    //Texture
+    const std::map<std::string, std::string> MAP_TEXTURE_PATHS = {
+        {"object_1", "Assets//Ob.png"},
+        {"object_2", "Assets//Ob1.png"},
+        {"tile_set", "Tileset.png"},
+    };
+
+    const std::map<std::string, std::string> MAP_DATA_PATHS = {
+        {"tile_layer", "Map//MapData//LayerData1.txt"},
+        {"object_1_layer", "Map//MapData//LayerData2.txt"},
+        {"object_2_layer", "Map//MapData//LayerData3.txt"},
+
+    };
+
+    //Data
+    const int NUM_TILE_SET_X = 10; const int NUM_TILE_SET_Y = 6; const int FIRST_ID_TILE_SET = 1;
+    const int NUM_OBJECT_1_X = 12; const int NUM_OBJECT_1_Y = 11; const int FIRST_ID_OBJECT_1 = 61;
+    const int NUM_OBJECT_2_X = 40; const int NUM_OBJECT_2_Y = 30; const int FIRST_ID_OBJECT_2 = 193;
 
 // Background Path
-const std::map<std::string, std::string> backgroundPaths = {
+const std::map<std::string, std::string> BACKGROUND_PATHS = {
     {"background_1", "Assets//Background//Layers//1.png"},
     {"background_2", "Assets//Background//Layers//2.png"},
     {"background_3", "Assets//Background//Layers//3.png"},

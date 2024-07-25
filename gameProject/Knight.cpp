@@ -2,6 +2,7 @@
 
 bool Knight::attack()
 {
+    // Placeholder implementation
     return false;
 }
 
@@ -23,22 +24,21 @@ bool Knight::update(float dt)
 
     this->setAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
 
-    this->setBody(100, 100);
     this->getBody()->update(dt);
-
     this->getAnimation()->UpdateAnimation();
 
-    return false;
+    return true;
 }
 
 bool Knight::render()
 {
-    this->getAnimation()->DrawAnimation(this->getTextureID(), this->getPosition().getX(), this->getPosition().getY(),
+    this->getAnimation()->DrawAnimation(this->getTextureID(), this->getPosition().getX() - this->getTextureWidth() / 2, this->getPosition().getY() - this->getTextureHeight() / 2,
         this->getTextureWidth(), this->getTextureHeight(), this->getAnimation()->flip);
     return true;
 }
 
 bool Knight::clean()
 {
+    // Placeholder implementation
     return false;
 }

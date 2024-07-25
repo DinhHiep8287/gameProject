@@ -30,6 +30,12 @@ public:
         delete _position;
     }
 
+    void updateRectShape()
+    {
+        _rectShape.x = static_cast<int>(_position->getX() - _rectShape.w / 2);
+        _rectShape.y = static_cast<int>(_position->getY() - _rectShape.h / 2);
+    }
+
     // Setter
     inline void setMass(float mass) { _mass = mass; }
     inline void setGravity(float gravity) { _gravity = gravity; }
@@ -43,13 +49,13 @@ public:
     {
         _position->setX(x);
         _position->setY(y);
-        _rectShape.x = static_cast<int>(x);
-        _rectShape.y = static_cast<int>(y);
+        _rectShape.x = static_cast<int>(x - _rectShape.w / 2);
+        _rectShape.y = static_cast<int>(y - _rectShape.h / 2);
     }
-    void setRectWidth(float w) { _rectShape.w = w;}
-    void setRectHeight(float h) { _rectShape.h = h;}
-    void setRectX(float x) { _rectShape.x = x; }
-    void setRectY(float y) { _rectShape.y = y; }
+    void setRectWidth(float w) { _rectShape.w = static_cast<int>(w); updateRectShape(); }
+    void setRectHeight(float h) { _rectShape.h = static_cast<int>(h); updateRectShape(); }
+    void setRectX(float x) { _rectShape.x = static_cast<int>(x); }
+    void setRectY(float y) { _rectShape.y = static_cast<int>(y); }
 
     // Getter
     float getMass() const { return _mass; }
@@ -106,13 +112,14 @@ public:
 
         *_position = *_position + (_velocity * dt);
 
-        /*if (_position->getY() > 300)
+        if (_position->getY() > 300)
         {
             _position->setY(300);
             _velocity.setY(0);
             _isGrounded = true;
-        }*/
+        }
 
+        updateRectShape();
     }
 
     void renderText(int startX, int startY) const

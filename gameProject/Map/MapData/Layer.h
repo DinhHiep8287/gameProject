@@ -7,7 +7,7 @@
 
 class Layer {
 public:
-    void loadLayer(const std::string& path, int numTileSetX, int numTileSetY, int firstId) {
+    Layer(const std::string& path, const std::string& textureID, int numTileSetX, int numTileSetY, int firstId) {
         std::ifstream mapFile(path);
         if (!mapFile.is_open()) {
             std::cerr << "Failed to open map file: " << path << std::endl;
@@ -20,7 +20,7 @@ public:
             id = id - firstId + 1;
             int x = (i % MAP_WIDTH) * TILE_SIZE;
             int y = (i / MAP_WIDTH) * TILE_SIZE;
-            Tile tile()
+            Tile tile(textureID, x, y, id, numTileSetX, numTileSetY);
             tiles.push_back(tile);
         }
         mapFile.close();
