@@ -21,7 +21,7 @@ private:
 
 public:
     Body()
-        : _mass(MASS), _gravity(GRAVITY), _force(0, 0), _friction(0, 0), _rectShape{ 0,0,0,0 }, _position(new Vector2D(0, 0)), _velocity(0, 0), _acceleration(0, 0), _isGrounded(true)
+        : _mass(MASS), _gravity(GRAVITY), _force(0, 0), _friction(0, 0), _rectShape{ 0,0,0,0 }, _position(new Vector2D(0, 0)), _velocity(0, 0), _acceleration(0, 0), _isGrounded(false)
     {
     }
 
@@ -45,6 +45,8 @@ public:
     inline void unsetForce() { _force = Vector2D(0, 0); }
     inline void setFriction(const Vector2D& friction) { _friction = friction; }
     inline void unsetFriction() { _friction = Vector2D(0, 0); }
+    inline void setIsGrounded(bool isGrounded) { _isGrounded = isGrounded; };
+
     void setPosition(float x, float y)
     {
         _position->setX(x);
@@ -64,9 +66,10 @@ public:
     Vector2D getFriction() const { return _friction; }
     SDL_Rect getRectShape() const { return _rectShape; }
     Vector2D getAcceleration() const { return _acceleration; }
-    Vector2D getVelocity() const { return _velocity; }
+    Vector2D& getVelocity() { return _velocity; }
+    const Vector2D& getVelocity() const { return _velocity; }
     Vector2D* getPosition() const { return _position; }
-
+    bool isGrounded() const { return _isGrounded; }
     // Method to jump
     void jump()
     {
@@ -111,7 +114,7 @@ public:
         if (_velocity.getY() < -MAX_VELOCITY_Y) _velocity.setY(-MAX_VELOCITY_Y);
 
         *_position = *_position + (_velocity * dt);
-
+        
         if (_position->getY() > 300)
         {
             _position->setY(300);
@@ -137,6 +140,7 @@ public:
         std::string positionPointerText = "PositionPointer: (" + std::to_string(this->getPosition()->getX()) + ", " + std::to_string(this->getPosition()->getY()) + ")";
         std::string velocityText = "Velocity: (" + std::to_string(this->getVelocity().getX()) + ", " + std::to_string(this->getVelocity().getY()) + ")";
         std::string accelerationText = "Acceleration: (" + std::to_string(this->getAcceleration().getX()) + ", " + std::to_string(this->getAcceleration().getY()) + ")";
+        std::string isGroundedText = "IsGrounded: " + std::to_string(this->_isGrounded);
 
         assetManager->renderText(Game::GetInstance()->renderer, massText, fontId, color, startX, startY);
         assetManager->renderText(Game::GetInstance()->renderer, gravityText, fontId, color, startX, startY + 20);
@@ -146,5 +150,8 @@ public:
         assetManager->renderText(Game::GetInstance()->renderer, positionPointerText, fontId, color, startX, startY + 100);
         assetManager->renderText(Game::GetInstance()->renderer, velocityText, fontId, color, startX, startY + 120);
         assetManager->renderText(Game::GetInstance()->renderer, accelerationText, fontId, color, startX, startY + 140);
+        assetManager->renderText(Game::GetInstance()->renderer, isGroundedText, fontId, color, startX, startY + 160);
+
+
     }
 };

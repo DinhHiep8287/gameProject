@@ -15,6 +15,23 @@ Vector2D* Camera::getPoint() {
 }
 
 
+bool Camera::isInViewBox(int objX, int objY, int objWidth, int objHeight) const
+{
+    int objRight = objX + objWidth;
+    int objBottom = objY + objHeight;
+    int viewRight = viewBox.x + viewBox.w;
+    int viewBottom = viewBox.y + viewBox.h;
+
+    return !(objX > viewRight || objRight < viewBox.x || objY > viewBottom || objBottom < viewBox.y);
+}
+
+bool Camera::isInViewBox(const SDL_Rect& rect) const
+{
+    return SDL_HasIntersection(&rect, &viewBox);
+}
+
+
+
 void Camera::setPoint(Vector2D* _point) {
     pPosition = _point;
 }

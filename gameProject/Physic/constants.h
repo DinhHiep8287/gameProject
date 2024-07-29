@@ -36,7 +36,7 @@ enum dir
     const std::map<std::string, std::string> MAP_TEXTURE_PATHS = {
         {"object_1", "Assets//Ob.png"},
         {"object_2", "Assets//Ob1.png"},
-        {"tile_set", "Tileset.png"},
+        {"tile_set", "Assets//Tileset.png"},
     };
 
     const std::map<std::string, std::string> MAP_DATA_PATHS = {

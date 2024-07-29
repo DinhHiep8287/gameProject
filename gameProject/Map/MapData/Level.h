@@ -2,41 +2,20 @@
 #include <string>
 #include <vector>
 #include "Layer.h"
-#include <initializer_list> 
+#include "../Physic/constants.h"
 
 class Level {
 public:
-    void loadLayers(const std::vector<Layer*>& layers) {
-        for (auto layer : layers) {
-            _layers.push_back(layer);
-        }
-    }
-
-    void loadLayers(std::initializer_list<Layer*> layers) {
-        for (auto layer : layers) {
-            _layers.push_back(layer);
-        }
-    }
-
-
-    void drawLevel() const {
-        for (const auto& layer : _layers) {
-            layer->drawLayer();
-        }
-    }
-
-    void clearLayers() {
-        for (auto layer : _layers) {
-            delete layer;
-        }
-        _layers.clear();
-    }
-
-    ~Level() {
-        clearLayers();
-    }
+    void loadLayers(const std::vector<Layer*>& layers);
+    void loadLayers(std::initializer_list<Layer*> layers);
+    void drawLevel() const;
+    void clearLayers();
+    static void loadMatrix(const std::string& path);
+    static bool isCollidingMap(SDL_Rect a, int level);
+    const std::vector<std::vector<std::vector<int>>>& getMatrix() const;
+    ~Level();
 
 private:
     std::vector<Layer*> _layers;
+    static std::vector<std::vector<std::vector<int>>> colisionLayerMatrix;
 };
-

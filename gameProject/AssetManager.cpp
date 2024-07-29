@@ -63,7 +63,6 @@ void AssetManager::renderBackground(std::string id, float x, float y, float widt
 {
     SDL_Rect srcrect = { 0 , 0 , width , height };
     SDL_Rect dstrect = { x - Camera::getInstance()->position.getX() * paralaxSpeed , y - Camera::getInstance()->position.getY() * paralaxSpeed , width , height };
-    //cout << " x : " << x - Camera::getInstance()->pos.x * paralaxSpeed << "  y : " << y - Camera::getInstance()->pos.y * paralaxSpeed << endl;
     SDL_RenderCopyEx(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect, 0, NULL, flip);
 }
 

@@ -1,4 +1,4 @@
-#include "Knight.h"
+﻿#include "Knight.h"
 
 bool Knight::attack()
 {
@@ -6,8 +6,26 @@ bool Knight::attack()
     return false;
 }
 
+void Knight::jump()
+{
+    if (this->getBody()->isGrounded()) {
+        this->getBody()->getVelocity().setY(-JUMP_FORCE);
+        this->getBody()->setIsGrounded(false);
+    }
+}
+
 bool Knight::update(float dt)
 {
+   Vector2D oldPosition = *(this->getBody()->getPosition());
+
+   // Kiểm tra va chạm
+   if (Level::isCollidingMap(this->getBody()->getRectShape(), 0)) {
+       // Xử lý va chạm
+       this->getBody()->setPosition(oldPosition.getX(), oldPosition.getY());
+       this->getBody()->setIsGrounded(true);
+       this->getBody()->getVelocity().setY(0); // Cân nhắc thêm để khôi phục vận tốc
+   }
+
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
         this->getBody()->setForceX(10);
     }
@@ -19,12 +37,16 @@ bool Knight::update(float dt)
     }
 
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
-        this->getBody()->jump();
+        this->jump();
     }
 
-    this->setAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
+    //
 
+    //Update Body
     this->getBody()->update(dt);
+
+    // Set + Update Animation
+    this->setAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
     this->getAnimation()->UpdateAnimation();
 
     return true;

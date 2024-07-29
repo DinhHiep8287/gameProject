@@ -39,6 +39,15 @@
     <ClCompile Include="Knight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Map\MapData\Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapData\Tile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\MapData\Layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">

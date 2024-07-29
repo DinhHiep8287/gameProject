@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <SDL.h>
 #include "../AssetManager.h"
 #include "../Camera.h"
@@ -7,9 +7,17 @@ const int TILE_SIZE = 32;
 
 class Tile {
 public:
-    Tile(std::string textureID, int mapX, int mapY, int id, int numTilesetX, int numTilesetY, int width = TILE_SIZE, int height = TILE_SIZE);
+    Tile(const std::string& textureID, int mapX, int mapY, int id, int numTilesetX, int numTilesetY, int width = TILE_SIZE, int height = TILE_SIZE);
 
     void draw() const;
+
+    const std::string& getTextureID() const { return textureID; }
+    int getMapX() const { return mapX; }
+    int getMapY() const { return mapY; }
+    int getTextureX() const { return textureX; }
+    int getTextureY() const { return textureY; }
+    int tWidth() const { return width; }
+    int getHeight() const { return height; }
 
 private:
     std::string textureID;
@@ -20,13 +28,3 @@ private:
     int width;
     int height;
 };
-
-Tile::Tile(std::string textureID, int mapX, int mapY, int id, int numTilesetX, int numTilesetY, int width, int height)
-    :  mapX(mapX), mapY(mapY), width(width), height(height) {
-    textureX = (id % numTilesetX == 0) ? (numTilesetX - 1) * TILE_SIZE : (id % numTilesetX - 1) * TILE_SIZE;
-    textureY = (id % numTilesetX == 0) ? (id / numTilesetX - 1) * TILE_SIZE : (id / numTilesetX) * TILE_SIZE;
-}
-
-void Tile::draw() const{
-    AssetManager::GetInstance()->renderObject(textureID, textureX, textureY, width, height, mapX, mapY);
-}

@@ -1,10 +1,12 @@
-#pragma once
+﻿#pragma once
 #include "Object.h"
 #include "Physic/constants.h"
 #include "Input.h"
+#include "Map/MapData/Level.h" 
 
 const float knightMaxHealth = 100.0f;
 const dir defaultDirection = RIGHT;
+
 
 class Knight : public Object
 {
@@ -19,6 +21,7 @@ public:
     }
 
     bool attack();
+    void jump();
     bool update(float dt) override;
     bool render() override;
     bool clean() override;

@@ -11,15 +11,18 @@
 
 Game* Game::instance = nullptr;
 
-Level* level;
-Layer* tileLayer = new Layer(MAP_DATA_PATHS.at("tile_layer"), MAP_TEXTURE_PATHS.at("tile_set"), NUM_TILE_SET_X, NUM_TILE_SET_Y, FIRST_ID_TILE_SET);
-Layer* objectLayer1 = new Layer(MAP_DATA_PATHS.at("object_1_layer"), MAP_TEXTURE_PATHS.at("object_1"), NUM_OBJECT_1_X, NUM_OBJECT_1_Y, FIRST_ID_OBJECT_1);
-Layer* objectLayer2 = new Layer(MAP_DATA_PATHS.at("object_2_layer"), MAP_TEXTURE_PATHS.at("object_2"), NUM_OBJECT_2_X, NUM_OBJECT_2_Y, FIRST_ID_OBJECT_2);
+// Level
+Level* level = new Level();
+Layer* tileLayer = new Layer(); 
+Layer* objectLayer1 = new Layer(); 
+Layer* objectLayer2 = new Layer();
 
+
+// Object
 Body testBody;
+Knight testKnight("KnightIdle", 100, 100, 50, 80, MASS);
 
-Knight testKnight("KnightIdle", 0, 0, 50, 100, MASS);
-
+//
 void initBackground() {
     for (const auto& pair : BACKGROUND_PATHS) {
         AssetManager::GetInstance()->loadTexture(pair.first, pair.second);
@@ -47,7 +50,11 @@ void initMapTexture() {
 }
 
 void initLevelData() {
+    tileLayer->loadLayer(MAP_DATA_PATHS.at("tile_layer"), "tile_set", NUM_TILE_SET_X, NUM_TILE_SET_Y, FIRST_ID_TILE_SET);
+    objectLayer1->loadLayer(MAP_DATA_PATHS.at("object_1_layer"), "object_1", NUM_OBJECT_1_X, NUM_OBJECT_1_Y, FIRST_ID_OBJECT_1);
+    objectLayer2->loadLayer(MAP_DATA_PATHS.at("object_2_layer"), "object_2", NUM_OBJECT_2_X, NUM_OBJECT_2_Y, FIRST_ID_OBJECT_2);
     level->loadLayers({tileLayer, objectLayer1, objectLayer2});
+    Level::loadMatrix(MAP_DATA_PATHS.at("tile_layer"));
 }
 
 void renderBackground() {
@@ -63,8 +70,8 @@ void renderKnight() {
     SDL_Rect tempRect = { testKnight.getPosition().getX() - testKnight.getTextureWidth()/2, testKnight.getPosition().getY() - testKnight.getTextureHeight()/2, testKnight.getTextureWidth(), testKnight.getTextureHeight()};
     AssetManager::GetInstance()->renderRect(tempRect);
     AssetManager::GetInstance()->renderRect(testKnight.getBody()->getRectShape());
-    //testKnight.getBody()->renderText(0, 0);
-    testKnight.renderText(0, 0);
+    testKnight.getBody()->renderText(0, 0);
+    //testKnight.renderText(0, 0);
 }
 
 void renderTest() {
@@ -83,6 +90,7 @@ void Game::init()
     initFont();
     initBackground();
     initKnightTexture();
+    initMapTexture();
     initLevelData();
 
     Camera::getInstance()->setPoint(testKnight.getBody()->getPosition());
@@ -100,11 +108,15 @@ void Game::update()
 void Game::render()
 {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
     SDL_RenderClear(renderer);
 
     renderBackground();
 
+    level->drawLevel();
+
     renderKnight();
+
 
     SDL_RenderPresent(renderer);
 }

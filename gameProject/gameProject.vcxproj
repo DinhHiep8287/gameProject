@@ -140,6 +140,9 @@
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Map\MapData\Layer.cpp" />
+    <ClCompile Include="Map\MapData\Level.cpp" />
+    <ClCompile Include="Map\MapData\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
