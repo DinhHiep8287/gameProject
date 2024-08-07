@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="FrameRateController.h" />
     <ClInclude Include="Game.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Map\MapData\Layer.h" />
     <ClInclude Include="Map\MapData\Level.h" />
     <ClInclude Include="Map\MapData\Tile.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Physic\constants.h" />
     <ClInclude Include="Input.h" />

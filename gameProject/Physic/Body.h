@@ -76,15 +76,6 @@ public:
     const Vector2D& getVelocity() const { return _velocity; }
     Vector2D* getPosition() const { return _position; }
     bool isGrounded() const { return _isGrounded; }
-    // Method to jump
-    void jump()
-    {
-        if (_isGrounded)
-        {
-            _velocity.setY(-JUMP_FORCE);
-            _isGrounded = false;
-        }
-    }
 
     // Update method
     void update(float dt)

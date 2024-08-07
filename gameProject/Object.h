@@ -11,13 +11,12 @@ class Object
 private:
     Body* body;
     float textureWidth, textureHeight;
-    std::string textureID;
     SDL_RendererFlip flip;
     Animation* animation;
 
 public:
-    Object(const std::string& _textureID, float x, float y, float w, float h, float mass)
-        : textureID(_textureID), textureWidth(0), textureHeight(0), flip(SDL_FLIP_NONE), animation(new Animation())
+    Object(float x, float y, float w, float h, float mass)
+        : textureWidth(0), textureHeight(0), flip(SDL_FLIP_NONE), animation(new Animation())
     {
         body = new Body();
         body->setPosition(x, y);
@@ -52,8 +51,6 @@ public:
     void setAnimation(Animation* anim) { animation = anim; }
     Animation* getAnimation() const { return animation; }
     void setFlip(SDL_RendererFlip f) { flip = f; }
-    std::string getTextureID() const { return textureID; }
-    void setTextureID(const std::string& _textureID) { textureID = _textureID; }
     SDL_RendererFlip getFlip() const { return flip; }
 
     void renderText(int startX, int startY) const
@@ -63,7 +60,6 @@ public:
         AssetManager* assetManager = AssetManager::GetInstance();
         std::string fontId = "default";
 
-        std::string textureIDText = "TextureID: " + this->getTextureID();
         std::string positionText = "Position: (" + std::to_string(this->getPosition().getX()) + ", " + std::to_string(this->getPosition().getY()) + ")";
         std::string rectShapeText = "RectShape: (w: " + std::to_string(this->getBody()->getRectShape().w) + ", h: " + std::to_string(this->getBody()->getRectShape().h) + ")";
         std::string textureWidthText = "TextureWidth: " + std::to_string(this->getTextureWidth());
@@ -76,7 +72,6 @@ public:
         std::string velocityText = "Velocity: (" + std::to_string(this->getBody()->getVelocity().getX()) + ", " + std::to_string(this->getBody()->getVelocity().getY()) + ")";
         std::string accelerationText = "Acceleration: (" + std::to_string(this->getBody()->getAcceleration().getX()) + ", " + std::to_string(this->getBody()->getAcceleration().getY()) + ")";
 
-        assetManager->renderText(Game::GetInstance()->renderer, textureIDText, fontId, color, startX, startY);
         assetManager->renderText(Game::GetInstance()->renderer, positionText, fontId, color, startX, startY + 20);
         assetManager->renderText(Game::GetInstance()->renderer, rectShapeText, fontId, color, startX, startY + 40);
         assetManager->renderText(Game::GetInstance()->renderer, textureWidthText, fontId, color, startX, startY + 60);

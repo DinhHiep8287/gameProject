@@ -19,10 +19,10 @@ const int MAP_HEIGHT = NUM_MAP_Y * SIZE;
 const float deltaTime = 0.1f;
 const float MASS = 1.0f;
 const float GRAVITY = 10.0f;
-const float JUMP_FORCE = 50;
+const float JUMP_FORCE = 70.0f;
 const float FRICTION = 0.9f;
 const float MAX_VELOCITY_X = 40.0f; 
-const float MAX_VELOCITY_Y = 40.0f; 
+const float MAX_VELOCITY_Y = 60.0f; 
 
 
 //direction

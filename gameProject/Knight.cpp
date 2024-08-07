@@ -44,6 +44,44 @@ void Knight::handleColission(SDL_Rect &rect, const SDL_Rect oldRect, const SDL_R
 
 }
 
+void Knight::handleState()
+{
+    if (!this->getBody()->isGrounded()) {
+        if (this->getBody()->getVelocity().getY() < 0) {
+            state = JUMPING;
+        }
+        else {
+            state = FALLING;
+        }
+    }
+    else if (abs(this->getBody()->getVelocity().getX()) > 0.8f) {
+        state = RUNNING;
+    }
+    else {
+        state = IDLE;
+    }
+
+    switch (state) {
+    case IDLE:
+        this->setAnimation("KnightIdle", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 80, 11, 0);
+        break;
+    case RUNNING:
+        this->setAnimation("KnightRun", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 8, 0);
+        break;
+    case JUMPING:
+        this->setAnimation("KnightJump", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 50, 4, 0);
+        break;
+    case FALLING:
+        this->setAnimation("KnightFall", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 50, 4, 0);
+        break;
+    case ATTACKING:
+        this->setAnimation("KnightAttack", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 60, 6, 0);
+        break;
+    }
+
+    this->getAnimation()->UpdateAnimation();
+}
+
 bool Knight::attack()
 {
     // Placeholder implementation
@@ -72,37 +110,14 @@ bool Knight::update(float dt)
     // Xử lý va chạm
     handleColission(rect, oldRect, newRect, oldPosition, newPosition);
     // Set và cập nhật animation
-    if (this->getBody()->getVelocity().getX() == 0)
-    {
-        std::cout << "dungim" << std::endl;
-        if (direction == LEFT) {
-            this->setAnimation("KnightIdle", SDL_FLIP_HORIZONTAL, 0, 80, 11, 0);
-            //this->setAnimation("KnightRun", SDL_FLIP_HORIZONTAL, 0, 100, 8, 0);
-
-        }
-        else {
-            this->setAnimation("KnightIdle", SDL_FLIP_NONE, 0, 80, 11, 0);
-            //this->setAnimation("KnightRun", SDL_FLIP_NONE, 0, 100, 8, 0);
-
-        }
-    }
-    else {
-        std::cout << "chay" << std::endl;
-        if (direction == LEFT) {
-            this->setAnimation("KnightRun", SDL_FLIP_HORIZONTAL, 0, 100, 8, 0);
-        }
-        else {
-            this->setAnimation("KnightRun", SDL_FLIP_NONE, 0, 100, 8, 0);
-        }
-    }
-    this->getAnimation()->UpdateAnimation();
+    handleState();
 
     return true;
 }
 
 bool Knight::render()
 {
-    this->getAnimation()->DrawAnimation(this->getTextureID(), this->getPosition().getX() - this->getTextureWidth() / 2, this->getPosition().getY() - this->getTextureHeight() / 2,
+    this->getAnimation()->DrawAnimation(this->getAnimation()->id, this->getPosition().getX() - this->getTextureWidth() / 2, this->getPosition().getY() - this->getTextureHeight() / 2,
         this->getTextureWidth(), this->getTextureHeight(), this->getAnimation()->flip);
     return true;
 }
