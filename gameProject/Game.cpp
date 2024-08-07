@@ -20,7 +20,7 @@ Layer* objectLayer2 = new Layer();
 
 // Object
 Body testBody;
-Knight testKnight("KnightIdle", 100, 100, 50, 80, MASS);
+Knight testKnight("KnightRun", 100, 100, 50, 80, MASS);
 
 //
 void initBackground() {

@@ -84,6 +84,59 @@ bool Level::isCollidingMap(SDL_Rect a, int level) {
     return false;
 }
 
+bool Level::isCollidingMapX(SDL_Rect a, int level) {
+    int tileSize = TILE_SIZE;
+    int mapWidth = colisionLayerMatrix[level][0].size();
+    int mapHeight = colisionLayerMatrix[level].size();
+
+    int leftTile = a.x / tileSize;
+    int rightTile = (a.x + a.w) / tileSize;
+    int topTile = a.y / tileSize;
+    int botTile = (a.y + a.h) / tileSize;
+
+    leftTile = std::max(0, std::min(leftTile, mapWidth - 1));
+    rightTile = std::max(0, std::min(rightTile, mapWidth - 1));
+    topTile = std::max(0, std::min(topTile, mapHeight - 1));
+    botTile = std::max(0, std::min(botTile, mapHeight - 1));
+
+    if (a.x < 0 || a.y < 0 || a.x + a.w > mapWidth * tileSize || a.y + a.h > mapHeight * tileSize) {
+        return true;
+    }
+
+    for (int i = topTile; i <= botTile; i++) {
+        //if (colisionLayerMatrix[level][i][])
+    }
+
+    return false;
+}
+
+
+bool Level::isCollidingMapY(SDL_Rect a, int level) {
+    int tileSize = TILE_SIZE;
+    int mapWidth = colisionLayerMatrix[level][0].size();
+    int mapHeight = colisionLayerMatrix[level].size();
+
+    int topTile = a.y / tileSize;
+    int botTile = (a.y + a.h) / tileSize;
+
+    topTile = std::max(0, std::min(topTile, mapHeight - 1));
+    botTile = std::max(0, std::min(botTile, mapHeight - 1));
+
+    for (int i = 0; i < mapWidth; ++i) {
+        for (int j = topTile; j <= botTile; ++j) {
+            if (colisionLayerMatrix[level][j][i] > 0) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+
+
+
 const std::vector<std::vector<std::vector<int>>>& Level::getMatrix() const {
     return colisionLayerMatrix;
 }

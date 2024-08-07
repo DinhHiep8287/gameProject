@@ -20,11 +20,16 @@ public:
     {
     }
 
+    void handleInput();
+    void handleColission(SDL_Rect& rect, const SDL_Rect oldRect, const SDL_Rect newRect,
+        const Vector2D oldPosition, const Vector2D newPostion);
+
     bool attack();
     void jump();
     bool update(float dt) override;
     bool render() override;
     bool clean() override;
+
 
     int getHealth() const { return health; }
     void setHealth(int health) { this->health = health; }

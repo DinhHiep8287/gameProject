@@ -46,6 +46,12 @@ public:
     inline void setFriction(const Vector2D& friction) { _friction = friction; }
     inline void unsetFriction() { _friction = Vector2D(0, 0); }
     inline void setIsGrounded(bool isGrounded) { _isGrounded = isGrounded; };
+    inline void setAccelerationX(float accelerationX) { _acceleration.setX(accelerationX); };
+    inline void setAccelerationY(float accelerationY) { _acceleration.setY(accelerationY); };
+    inline void unsetVelocity() { _velocity = Vector2D(0, 0); }
+    inline void unsetVelocityX() { _velocity.setX(0); }
+    inline void unsetVelocityY() { _velocity.setY(0); }
+
 
     void setPosition(float x, float y)
     {
@@ -114,13 +120,6 @@ public:
         if (_velocity.getY() < -MAX_VELOCITY_Y) _velocity.setY(-MAX_VELOCITY_Y);
 
         *_position = *_position + (_velocity * dt);
-        
-        if (_position->getY() > 300)
-        {
-            _position->setY(300);
-            _velocity.setY(0);
-            _isGrounded = true;
-        }
 
         updateRectShape();
     }

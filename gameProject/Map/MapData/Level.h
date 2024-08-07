@@ -12,6 +12,8 @@ public:
     void clearLayers();
     static void loadMatrix(const std::string& path);
     static bool isCollidingMap(SDL_Rect a, int level);
+    static bool isCollidingMapX(SDL_Rect a, int level);
+    static bool isCollidingMapY(SDL_Rect a, int level);
     const std::vector<std::vector<std::vector<int>>>& getMatrix() const;
     ~Level();
 
