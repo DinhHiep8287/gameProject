@@ -8,10 +8,10 @@ enum MonsterType {
     SKELETON
 };
 
-const float defaultMonsterMaxHealth = 100.0f;
-const float MONSTER_ATTACK_RANGE = 50.0f;
+const float DEFAULT_MONSTER_HEALTH = 100.0f;
+const float MONSTER_ATTACK_RANGE = 100.0f;
 const float MONSTER_ATTACK_DAMAGE = 10.0f;
-
+const int DEFAULT_MONSTER_ATTACK_SPEED = 100;
 class Monster : public Character
 {
 private:
@@ -19,8 +19,9 @@ private:
 
 public:
     Monster(float x, float y, float w, float h, float mass, MonsterType type)
-        : Character(x, y, w, h, mass, defaultMonsterMaxHealth, defaultDirection), type(type)
+        : Character(x, y, w, h, mass, DEFAULT_MONSTER_HEALTH, defaultDirection, DEFAULT_MONSTER_ATTACK_SPEED), type(type)
     {
+        maxAttackFrame = attackSpeed / 100 * 43;
     }
 
     void handleInput();

@@ -154,6 +154,8 @@ void Game::render()
 
     //renderMonster();
 
+    //testMonster.renderText(0,0); 
+
     SDL_RenderPresent(renderer);
 }
 

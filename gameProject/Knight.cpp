@@ -22,18 +22,36 @@ void Knight::handleInput() {
     }
 
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_J)) {
-        this->attack();
+        attack();
     }
 }
 
 void Knight::handleState()
 {
-    if (state == ATTACKING) {
-        this->setAnimation("KnightAttack", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 60, 6, 0);
+    if (state == DEAD) {
+        this->setAnimation("KnightDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
         this->getAnimation()->UpdateAnimation();
         return;
     }
 
+    if (state == ATTACKING) {
+        attackFrame++;
+        this->setAnimation("KnightAttack", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, attackSpeed, 6, 0);
+        this->getAnimation()->UpdateAnimation();
+        isDamageFrame = false;
+        
+
+        if (this->getAnimation()->IsAnimationDone()) {
+            attackFrame = 0;
+            state = IDLE; 
+        }
+
+        if (maxAttackFrame != 0 && attackFrame == int(maxAttackFrame / 2) ) {
+            isDamageFrame = true;
+        }
+        return;
+    }
+    
     if (!this->getBody()->isGrounded()) {
         if (this->getBody()->getVelocity().getY() < 0) {
             state = JUMPING;
@@ -48,7 +66,7 @@ void Knight::handleState()
     else {
         state = IDLE;
     }
-
+    
     switch (state) {
     case IDLE:
         this->setAnimation("KnightIdle", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 80, 11, 0);
@@ -71,23 +89,24 @@ void Knight::handleState()
 }
 
 bool Knight::attack() {
-    if (state == ATTACKING || attackTimer > 0.0f) {
-        return false;
-    }
-
     state = ATTACKING;
-    attackTimer = attackCooldown;
     return true;
 }
 
 bool Knight::takeDamage(float damage) {
-    if (state == TAKING_DAMAGE) {
-        return false; 
+    if (state == DEAD) {
+        return false;
     }
-    this->health -= damage;
-    state = TAKING_DAMAGE;
 
-    return false; 
+    this->health -= damage;
+    if (this->health <= 0) {
+        this->health = 0; // Đảm bảo máu không âm
+        state = DEAD;
+        return true;
+    }
+
+    state = TAKING_DAMAGE;
+    return false;
 }
 void Knight::jump()
 {
@@ -99,12 +118,9 @@ void Knight::jump()
 
 bool Knight::update(float dt)
 {
-
-    if (attackTimer > 0.0f) {
-        attackTimer -= dt;
+    if (state == DEAD) {
+        return true;
     }
-
-    std::cout << attackTimer << std::endl;
 
     Vector2D oldPosition = *this->getBody()->getPosition();
     SDL_Rect oldRect = this->getBody()->getRectShape();

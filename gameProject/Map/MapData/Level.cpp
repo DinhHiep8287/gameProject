@@ -98,40 +98,43 @@ void Level::addMonster(Monster* monster) {
 }
 
 void Level::update(float dt) {
-    if (_knight) {
-        _knight->update(dt);
-        if (_knight->getState() == ATTACKING) {
-            for (auto monster : _monsters) {
-                if (_knight->findMonsterInRange(monster->getPosition())) {
-                    monster->takeDamage(KNIGHT_ATTACK_DAMAGE);
-                }
-            }
-        }
-    }
-
     for (auto monster : _monsters) {
         if (monster) {
             monster->update(dt);
-            if (monster->getState() == ATTACKING && _knight) {
-                if (monster->findKnightInRange(_knight->getPosition())) {
-                    _knight->takeDamage(MONSTER_ATTACK_DAMAGE);
+            if (_knight && monster->findKnightInRange(_knight->getPosition()) && monster->getIsDamageFrame()) {
+                std::cout << "gay sat thuong\n";
+                _knight->takeDamage(MONSTER_ATTACK_DAMAGE);
+                std::cout << _knight->getHealth() << std::endl;
+            }
+        }
+    }
+    if (_knight) {
+        _knight->update(dt);
+        if (_knight->getState() == ATTACKING && _knight->getIsDamageFrame()) {
+            for (auto monster : _monsters) {
+                if (monster && _knight->findMonsterInRange(monster->getPosition())) {
+                    std::cout << "gay sat thuong\n";
+                    monster->takeDamage(KNIGHT_ATTACK_DAMAGE);
+                    std::cout << monster->getHealth() << std::endl;
                 }
             }
         }
     }
+
 }
+
 
 void Level::render() {
     drawLevel();
-
-    if (_knight) {
-        _knight->render();
-    }
 
     for (auto monster : _monsters) {
         if (monster) {
             monster->render();
         }
+    }
+
+    if (_knight) {
+        _knight->render();
     }
 }
 

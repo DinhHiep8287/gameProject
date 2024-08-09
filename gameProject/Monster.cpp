@@ -6,6 +6,23 @@ void Monster::handleInput() {
 
 void Monster::handleState()
 {
+    if(state == ATTACKING) {
+        attackFrame++;
+        setTextureBasedOnTypeAndState();
+        this->getAnimation()->UpdateAnimation();
+        isDamageFrame = false;
+
+        if (this->getAnimation()->IsAnimationDone()) {
+            attackFrame = 0;
+            state = IDLE;
+        }
+
+        if (maxAttackFrame != 0 && attackFrame == int(maxAttackFrame / 4 * 3)) {
+            isDamageFrame = true;
+        }
+        return;
+    }
+
     if (abs(this->getBody()->getVelocity().getX()) > 0.8f) {
         state = RUNNING;
     }
@@ -33,12 +50,8 @@ void Monster::handleState()
 
 bool Monster::attack()
 {
-    if (state == ATTACKING) {
-        // Thực hiện tấn công (có thể thêm logic animation nếu cần)
-        this->setAnimation("MonsterAttack", SDL_FLIP_NONE, 0, 60, 6, 0);
-        return true; // Đã tấn công
-    }
-    return false; // Không thể tấn công
+    state = ATTACKING;
+    return true;
 }
 
 bool Monster::takeDamage(float damage) {
@@ -57,8 +70,13 @@ void Monster::jump()
 
 bool Monster::findKnightInRange(const Vector2D& knightPos) {
     float distance = this->getPosition().distance(knightPos);
-    return (distance < MONSTER_ATTACK_RANGE);
+    if (distance < MONSTER_ATTACK_RANGE) {
+        attack();
+        return true;
+    }
+    return false;
 }
+
 
 void Monster::setTextureBasedOnTypeAndState() {
     switch (type) {
@@ -70,7 +88,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("FlyingEyeFlight", SDL_FLIP_NONE, 0, 100, 6, 0);
         }
         else if (state == ATTACKING) {
-            this->setAnimation("FlyingEyeAttack", SDL_FLIP_NONE, 0, 60, 4, 0);
+            this->setAnimation("FlyingEyeAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("FlyingEyeDead", SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -85,7 +103,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("GoblinRun", SDL_FLIP_NONE, 0, 100, 8, 0);
         }
         else if (state == ATTACKING) {
-            this->setAnimation("GoblinAttack", SDL_FLIP_NONE, 0, 60, 4, 0);
+            this->setAnimation("GoblinAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("GoblinDead", SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -100,7 +118,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("MushroomRun", SDL_FLIP_NONE, 0, 100, 8, 0);
         }
         else if (state == ATTACKING) {
-            this->setAnimation("MushroomAttack", SDL_FLIP_NONE, 0, 60, 4, 0);
+            this->setAnimation("MushroomAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("MushroomDead", SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -115,7 +133,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("SkeletonWalk", SDL_FLIP_NONE, 0, 100, 8, 0);
         }
         else if (state == ATTACKING) {
-            this->setAnimation("SkeletonAttack", SDL_FLIP_NONE, 0, 60, 4, 0);
+            this->setAnimation("SkeletonAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("SkeletonDead", SDL_FLIP_NONE, 0, 100, 1, 0);

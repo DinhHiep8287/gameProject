@@ -14,13 +14,17 @@ enum CharacterState {
 
 class Character : public Object {
 protected:
-    int health;
+    float attackSpeed;
+    float attackFrame = 0;
+    float maxAttackFrame;
+    float health;
     dir direction;
     CharacterState state;
+    bool isDamageFrame = false;
 
 public:
-    Character(float x, float y, float w, float h, float mass, int maxHealth, dir defaultDirection)
-        : Object(x, y, w, h, mass), health(maxHealth), direction(defaultDirection), state(IDLE)
+    Character(float x, float y, float w, float h, float mass, int maxHealth, dir defaultDirection, int _attackSpeed)
+        : Object(x, y, w, h, mass), health(maxHealth), direction(defaultDirection), state(IDLE), attackSpeed(_attackSpeed)
     {
     }
 
@@ -38,9 +42,8 @@ public:
 
         rect.y = newRect.y;
         if (Level::isCollidingMap(rect, 0)) {
-            this->getBody()->unsetVelocityY();
             this->getBody()->setPosition(this->getBody()->getPosition()->getX(), oldPosition.getY());
-
+            this->getBody()->unsetVelocityY();
             if (newPosition.getY() > oldPosition.getY()) {
                 this->getBody()->setIsGrounded(true);
             }
@@ -61,17 +64,39 @@ public:
     CharacterState getState() const { return state; }
     void setState(CharacterState _state) { state = _state; }
 
+    bool getIsDamageFrame() const { return isDamageFrame; }
+    void setIsDamageFrame(bool _isDamageFrame) { isDamageFrame = _isDamageFrame; }
+
     void renderText(int startX, int startY) const {
         Object::renderText(0, 0);
-        SDL_Color color = { 255, 255, 255, 255 }; // White color
+        SDL_Color color = { 255, 255, 255, 255 };
         std::string fontId = "default";
 
-        std::string heathText = "Health: " + std::to_string(this->getHealth());
+        std::string healthText = "Health: " + std::to_string(this->getHealth());
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, healthText, fontId, color, startX, startY + 240);
+
         std::string stateText = "State: " + std::to_string(this->getState());
-        
-        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, heathText, fontId, color, startX, startY + 240);
         AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, stateText, fontId, color, startX, startY + 260);
 
+        std::string attackSpeedText = "Attack Speed: " + std::to_string(this->attackSpeed);
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, attackSpeedText, fontId, color, startX, startY + 280);
+
+        std::string attackFrameText = "Attack Frame: " + std::to_string(this->attackFrame);
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, attackFrameText, fontId, color, startX, startY + 300);
+
+        std::string maxAttackFrameText = "Max Attack Frame: " + std::to_string(this->maxAttackFrame);
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, maxAttackFrameText, fontId, color, startX, startY + 320);
+        std::string directionText;
+        if (this->direction == LEFT) {
+            directionText = "Direction: LEFT";
+        }
+        else {
+            directionText = "Direction: RIGHT";
+        }
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, directionText, fontId, color, startX, startY + 340);
+
+        std::string isDamageFrameText = "Is Damage Frame: " + std::string(this->isDamageFrame ? "Yes" : "No");
+        AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, isDamageFrameText, fontId, color, startX, startY + 360);
     }
 
     virtual bool attack() = 0;

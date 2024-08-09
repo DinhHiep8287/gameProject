@@ -4,17 +4,16 @@
 #include "Input.h"
 
 const float knightMaxHealth = 100.0f;
-const float ATTACK_RANGE = 50.0f;
-
+const float ATTACK_RANGE = 200.0f;
 const float KNIGHT_ATTACK_DAMAGE = 30.0f;
+const float DEFAULT_KNIGHT_ATTACK_SPEED = 150;
 
 class Knight : public Character {
 public:
-    float attackCooldown = 5.0f;
-    float attackTimer = 0.0f;
     Knight(float x, float y, float w, float h, float mass)
-        : Character(x, y, w, h, mass, knightMaxHealth, defaultDirection)
+        : Character(x, y, w, h, mass, knightMaxHealth, defaultDirection, DEFAULT_KNIGHT_ATTACK_SPEED)
     {
+        maxAttackFrame = attackSpeed / 100 * 30;
     }
 
     bool findMonsterInRange(const Vector2D& monsterPos);
