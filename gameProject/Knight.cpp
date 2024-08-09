@@ -6,30 +6,33 @@ bool Knight::findMonsterInRange(const Vector2D& monsterPos) {
 }
 
 void Knight::handleInput() {
-    if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
-        this->getBody()->setForceX(10);
-        direction = RIGHT;
-    }
-    else if (Input::getInstance()->getKeyDown(SDL_SCANCODE_A)) {
-        this->getBody()->setForceX(-10);
-        direction = LEFT;
-    }
-    else {
-        this->getBody()->unsetForce();
-    }
-    if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
-        this->jump();
-    }
+    if (state != DEAD)
+    {
+        if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
+            this->getBody()->setForceX(10);
+            direction = RIGHT;
+        }
+        else if (Input::getInstance()->getKeyDown(SDL_SCANCODE_A)) {
+            this->getBody()->setForceX(-10);
+            direction = LEFT;
+        }
+        else {
+            this->getBody()->unsetForce();
+        }
+        if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
+            this->jump();
+        }
 
-    if (Input::getInstance()->getKeyDown(SDL_SCANCODE_J)) {
-        attack();
+        if (Input::getInstance()->getKeyDown(SDL_SCANCODE_J)) {
+            attack();
+        }
     }
 }
 
 void Knight::handleState()
 {
     if (state == DEAD) {
-        this->setAnimation("KnightDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
+        this->setAnimation("KnightDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 80, 1, 0);
         this->getAnimation()->UpdateAnimation();
         return;
     }
@@ -118,23 +121,21 @@ void Knight::jump()
 
 bool Knight::update(float dt)
 {
-    if (state == DEAD) {
-        return true;
-    }
-
+    
     Vector2D oldPosition = *this->getBody()->getPosition();
     SDL_Rect oldRect = this->getBody()->getRectShape();
     SDL_Rect rect = this->getBody()->getRectShape();
     // Xử lý di chuyển
     handleInput();
+    handleState();    
     // Cập nhật cơ thể
-    this->getBody()->update(dt);
+    this->getBody()->update(dt);    
     Vector2D newPosition = *this->getBody()->getPosition();
     SDL_Rect newRect = this->getBody()->getRectShape();
     // Xử lý va chạm
     handleColission(rect, oldRect, newRect, oldPosition, newPosition);
     // Set và cập nhật animation
-    handleState();
+    
 
     return true;
 }

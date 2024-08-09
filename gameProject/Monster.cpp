@@ -6,6 +6,12 @@ void Monster::handleInput() {
 
 void Monster::handleState()
 {
+    if (state == DEAD) {
+        setTextureBasedOnTypeAndState();
+        this->getAnimation()->UpdateAnimation();
+        return;
+    }
+
     if(state == ATTACKING) {
         attackFrame++;
         setTextureBasedOnTypeAndState();
@@ -55,12 +61,18 @@ bool Monster::attack()
 }
 
 bool Monster::takeDamage(float damage) {
-    if (state == TAKING_DAMAGE) {
+    if (state == DEAD) {
         return false;
     }
-    this->health -= damage;
-    state = TAKING_DAMAGE;
 
+    this->health -= damage;
+    if (this->health <= 0) {
+        this->health = 0; // Đảm bảo máu không âm
+        state = DEAD;
+        return true;
+    }
+
+    state = TAKING_DAMAGE;
     return false;
 }
 
@@ -69,10 +81,13 @@ void Monster::jump()
 }
 
 bool Monster::findKnightInRange(const Vector2D& knightPos) {
-    float distance = this->getPosition().distance(knightPos);
-    if (distance < MONSTER_ATTACK_RANGE) {
-        attack();
-        return true;
+    if (state != DEAD)
+    {
+        float distance = this->getPosition().distance(knightPos);
+        if (distance < MONSTER_ATTACK_RANGE) {
+            attack();
+            return true;
+        }
     }
     return false;
 }
@@ -82,10 +97,10 @@ void Monster::setTextureBasedOnTypeAndState() {
     switch (type) {
     case FLYING_EYE:
         if (state == IDLE) {
-            this->setAnimation("FlyingEyeFlight", SDL_FLIP_NONE, 0, 100, 6, 0);
+            this->setAnimation("FlyingEyeFlight", SDL_FLIP_NONE, 0, 100, 8, 0);
         }
         else if (state == RUNNING) {
-            this->setAnimation("FlyingEyeFlight", SDL_FLIP_NONE, 0, 100, 6, 0);
+            this->setAnimation("FlyingEyeFlight", SDL_FLIP_NONE, 0, 100, 8, 0);
         }
         else if (state == ATTACKING) {
             this->setAnimation("FlyingEyeAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
@@ -149,12 +164,12 @@ bool Monster::update(float dt) {
 
     // Xử lý di chuyển
     handleInput();
+    handleState();
     // Cập nhật cơ thể
     this->getBody()->update(dt);
     Vector2D newPosition = *this->getBody()->getPosition();
     SDL_Rect newRect = this->getBody()->getRectShape();
     this->handleColission(rect, oldRect, newRect, oldPosition, newPosition);
-    handleState();
     return true;
 }
 
