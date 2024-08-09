@@ -2,23 +2,27 @@
 #include "Character.h"
 #include "Physic/constants.h"
 #include "Input.h"
-#include "Map/MapData/Level.h" 
 
 const float knightMaxHealth = 100.0f;
-const dir defaultDirection = RIGHT;
+const float ATTACK_RANGE = 50.0f;
+
+const float KNIGHT_ATTACK_DAMAGE = 30.0f;
 
 class Knight : public Character {
 public:
+    float attackCooldown = 5.0f;
+    float attackTimer = 0.0f;
     Knight(float x, float y, float w, float h, float mass)
         : Character(x, y, w, h, mass, knightMaxHealth, defaultDirection)
     {
     }
 
+    bool findMonsterInRange(const Vector2D& monsterPos);
+
     void handleInput();
-    void handleColission(SDL_Rect& rect, const SDL_Rect oldRect, const SDL_Rect newRect,
-        const Vector2D oldPosition, const Vector2D newPosition);
     void handleState();
     bool attack() override;
+    bool takeDamage(float damage);
     void jump() override;
     bool update(float dt) override;
     bool render() override;

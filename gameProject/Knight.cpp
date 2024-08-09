@@ -1,5 +1,10 @@
 ﻿#include "Knight.h"
 
+bool Knight::findMonsterInRange(const Vector2D& monsterPos) {
+    float distance = this->getPosition().distance(monsterPos);
+    return (distance < ATTACK_RANGE);
+}
+
 void Knight::handleInput() {
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
         this->getBody()->setForceX(10);
@@ -15,37 +20,20 @@ void Knight::handleInput() {
     if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
         this->jump();
     }
-}
 
-void Knight::handleColission(SDL_Rect &rect, const SDL_Rect oldRect, const SDL_Rect newRect,
-                            const Vector2D oldPosition, const Vector2D newPosition) {
-    rect.x = newRect.x;
-    if (Level::isCollidingMap(rect, 0)) {
-        this->getBody()->setPosition(oldPosition.getX(), oldPosition.getY());
-        this->getBody()->unsetVelocityX();
-        rect.x = oldRect.x;
+    if (Input::getInstance()->getKeyDown(SDL_SCANCODE_J)) {
+        this->attack();
     }
-    else {
-        this->getBody()->setPosition(newPosition.getX(), oldPosition.getY());
-    }
-
-    rect.y = newRect.y;
-    if (Level::isCollidingMap(rect, 0)) {
-        this->getBody()->setPosition(this->getBody()->getPosition()->getX(), oldPosition.getY());
-        this->getBody()->unsetVelocityY();
-        if (newPosition.getY() > oldPosition.getY()) {
-            this->getBody()->setIsGrounded(true);
-        }
-        rect.y = oldRect.y;
-    }
-    else {
-        this->getBody()->setPosition(this->getBody()->getPosition()->getX(), newPosition.getY());
-    }
-
 }
 
 void Knight::handleState()
 {
+    if (state == ATTACKING) {
+        this->setAnimation("KnightAttack", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 60, 6, 0);
+        this->getAnimation()->UpdateAnimation();
+        return;
+    }
+
     if (!this->getBody()->isGrounded()) {
         if (this->getBody()->getVelocity().getY() < 0) {
             state = JUMPING;
@@ -82,12 +70,25 @@ void Knight::handleState()
     this->getAnimation()->UpdateAnimation();
 }
 
-bool Knight::attack()
-{
-    // Placeholder implementation
-    return false;
+bool Knight::attack() {
+    if (state == ATTACKING || attackTimer > 0.0f) {
+        return false;
+    }
+
+    state = ATTACKING;
+    attackTimer = attackCooldown;
+    return true;
 }
 
+bool Knight::takeDamage(float damage) {
+    if (state == TAKING_DAMAGE) {
+        return false; 
+    }
+    this->health -= damage;
+    state = TAKING_DAMAGE;
+
+    return false; 
+}
 void Knight::jump()
 {
     if (this->getBody()->isGrounded()) {
@@ -98,6 +99,13 @@ void Knight::jump()
 
 bool Knight::update(float dt)
 {
+
+    if (attackTimer > 0.0f) {
+        attackTimer -= dt;
+    }
+
+    std::cout << attackTimer << std::endl;
+
     Vector2D oldPosition = *this->getBody()->getPosition();
     SDL_Rect oldRect = this->getBody()->getRectShape();
     SDL_Rect rect = this->getBody()->getRectShape();

@@ -143,6 +143,7 @@
     <ClCompile Include="Map\MapData\Layer.cpp" />
     <ClCompile Include="Map\MapData\Level.cpp" />
     <ClCompile Include="Map\MapData\Tile.cpp" />
+    <ClCompile Include="Monster.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />

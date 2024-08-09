@@ -1,7 +1,8 @@
 ﻿#include "Level.h"
 #include <iostream>
 #include <fstream>
-
+#include "../Knight.h"
+#include "../Monster.h"
 // Định nghĩa biến static
 std::vector<std::vector<std::vector<int>>> Level::colisionLayerMatrix;
 
@@ -84,61 +85,54 @@ bool Level::isCollidingMap(SDL_Rect a, int level) {
     return false;
 }
 
-bool Level::isCollidingMapX(SDL_Rect a, int level) {
-    int tileSize = TILE_SIZE;
-    int mapWidth = colisionLayerMatrix[level][0].size();
-    int mapHeight = colisionLayerMatrix[level].size();
-
-    int leftTile = a.x / tileSize;
-    int rightTile = (a.x + a.w) / tileSize;
-    int topTile = a.y / tileSize;
-    int botTile = (a.y + a.h) / tileSize;
-
-    leftTile = std::max(0, std::min(leftTile, mapWidth - 1));
-    rightTile = std::max(0, std::min(rightTile, mapWidth - 1));
-    topTile = std::max(0, std::min(topTile, mapHeight - 1));
-    botTile = std::max(0, std::min(botTile, mapHeight - 1));
-
-    if (a.x < 0 || a.y < 0 || a.x + a.w > mapWidth * tileSize || a.y + a.h > mapHeight * tileSize) {
-        return true;
-    }
-
-    for (int i = topTile; i <= botTile; i++) {
-        //if (colisionLayerMatrix[level][i][])
-    }
-
-    return false;
+const std::vector<std::vector<std::vector<int>>>& Level::getMatrix() const {
+    return colisionLayerMatrix;
 }
 
+void Level::addKnight(Knight* knight) {
+    _knight = knight;
+}
 
-bool Level::isCollidingMapY(SDL_Rect a, int level) {
-    int tileSize = TILE_SIZE;
-    int mapWidth = colisionLayerMatrix[level][0].size();
-    int mapHeight = colisionLayerMatrix[level].size();
+void Level::addMonster(Monster* monster) {
+    _monsters.push_back(monster);
+}
 
-    int topTile = a.y / tileSize;
-    int botTile = (a.y + a.h) / tileSize;
-
-    topTile = std::max(0, std::min(topTile, mapHeight - 1));
-    botTile = std::max(0, std::min(botTile, mapHeight - 1));
-
-    for (int i = 0; i < mapWidth; ++i) {
-        for (int j = topTile; j <= botTile; ++j) {
-            if (colisionLayerMatrix[level][j][i] > 0) {
-                return true;
+void Level::update(float dt) {
+    if (_knight) {
+        _knight->update(dt);
+        if (_knight->getState() == ATTACKING) {
+            for (auto monster : _monsters) {
+                if (_knight->findMonsterInRange(monster->getPosition())) {
+                    monster->takeDamage(KNIGHT_ATTACK_DAMAGE);
+                }
             }
         }
     }
 
-    return false;
+    for (auto monster : _monsters) {
+        if (monster) {
+            monster->update(dt);
+            if (monster->getState() == ATTACKING && _knight) {
+                if (monster->findKnightInRange(_knight->getPosition())) {
+                    _knight->takeDamage(MONSTER_ATTACK_DAMAGE);
+                }
+            }
+        }
+    }
 }
 
+void Level::render() {
+    drawLevel();
 
+    if (_knight) {
+        _knight->render();
+    }
 
-
-
-const std::vector<std::vector<std::vector<int>>>& Level::getMatrix() const {
-    return colisionLayerMatrix;
+    for (auto monster : _monsters) {
+        if (monster) {
+            monster->render();
+        }
+    }
 }
 
 Level::~Level() {

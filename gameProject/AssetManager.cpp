@@ -26,6 +26,9 @@ bool AssetManager::loadFont(std::string id, std::string fileName, int fontSize)
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
         return false;
     }
+    else {
+        std::cout << "Load thanh cong: " << fileName << std::endl;
+    }
 
     _fontMap[id] = font;
     return true;
@@ -145,15 +148,22 @@ void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::
 float AssetManager::textureWidth(std::string id)
 {
     SDL_Texture* texture = _textureMap[id];
+    if (!texture) {
+        std::cerr << "Texture not found: " << id << std::endl;
+        return 0;
+    }
     SDL_Rect rect1;
     SDL_QueryTexture(texture, NULL, NULL, &rect1.w, &rect1.h);
     return rect1.w;
-    
 }
 
 float AssetManager::textureHeight(std::string id)
 {
     SDL_Texture* texture = _textureMap[id];
+    if (!texture) {
+        std::cerr << "Texture not found: " << id << std::endl;
+        return 0;
+    }
     SDL_Rect rect1;
     SDL_QueryTexture(texture, NULL, NULL, &rect1.w, &rect1.h);
     return rect1.h;

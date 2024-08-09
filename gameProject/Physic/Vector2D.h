@@ -84,4 +84,10 @@ public:
     {
         std::cout << theObject << " ( " << x << " " << y << " )" << std::endl;
     }
+
+    float distance(const Vector2D& other) const {
+        float dx = x - other.getX();
+        float dy = y - other.getY();
+        return std::sqrt(dx * dx + dy * dy);
+    }
 };

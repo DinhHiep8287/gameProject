@@ -16,6 +16,12 @@ const int MAP_WIDTH = NUM_MAP_X * SIZE;
 const int MAP_HEIGHT = NUM_MAP_Y * SIZE;
 
 // Physic
+    //direction
+    enum dir
+    {
+        LEFT, RIGHT
+    };
+
 const float deltaTime = 0.1f;
 const float MASS = 1.0f;
 const float GRAVITY = 10.0f;
@@ -23,13 +29,9 @@ const float JUMP_FORCE = 70.0f;
 const float FRICTION = 0.9f;
 const float MAX_VELOCITY_X = 40.0f; 
 const float MAX_VELOCITY_Y = 60.0f; 
+const dir defaultDirection = RIGHT;
 
 
-//direction
-enum dir
-{
-	LEFT, RIGHT
-};
 
 // Map Data
     //Texture
@@ -81,5 +83,54 @@ const int DEFAULT_FONT_SIZE = 20;
     {"KnightTakeHit", "Assets//Knight//Take Hit.png"},
     {"KnightDie", "Assets//Knight//Death.png"},
     {"KnightDead", "Assets//Knight//Dead.png"}
+    };
+
+    //Monster
+    const std::map<std::string, std::string> FLYING_EYE_TEXTURE_PATHS = {
+        {"FlyingEyeAttack", "Assets//Monster//Flying eye//Attack.png"},
+        {"FlyingEyeAttack2", "Assets//Monster//Flying eye//Attack2.png"},
+        {"FlyingEyeAttack3", "Assets//Monster//Flying eye//Attack3.png"},
+        {"FlyingEyeDead", "Assets//Monster//Flying eye//Dead.png"},
+        {"FlyingEyeDeath", "Assets//Monster//Flying eye//Death.png"},
+        {"FlyingEyeFlight", "Assets//Monster//Flying eye//Flight.png"},
+        {"FlyingEyeProjectileSprite", "Assets//Monster//Flying eye//projectile_sprite.png"},
+        {"FlyingEyeTakeHit", "Assets//Monster//Flying eye//Take Hit.png"}
+    };
+
+    const std::map<std::string, std::string> GOBLIN_TEXTURE_PATHS = {
+        {"GoblinAttack", "Assets//Monster//Goblin//Attack.png"},
+        {"GoblinAttack2", "Assets//Monster//Goblin//Attack2.png"},
+        {"GoblinAttack3", "Assets//Monster//Goblin//Attack3.png"},
+        {"GoblinBombSprite", "Assets//Monster//Goblin//Bomb_sprite.png"},
+        {"GoblinDead", "Assets//Monster//Goblin//Dead.png"},
+        {"GoblinDeath", "Assets//Monster//Goblin//Death.png"},
+        {"GoblinIdle", "Assets//Monster//Goblin//Idle.png"},
+        {"GoblinRun", "Assets//Monster//Goblin//Run.png"},
+        {"GoblinTakeHit", "Assets//Monster//Goblin//Take Hit.png"}
+    };
+
+    const std::map<std::string, std::string> MUSHROOM_TEXTURE_PATHS = {
+        {"MushroomAttack", "Assets//Monster//Mushroom//Attack.png"},
+        {"MushroomAttack2", "Assets//Monster//Mushroom//Attack2.png"},
+        {"MushroomAttack3", "Assets//Monster//Mushroom//Attack3.png"},
+        {"MushroomDead", "Assets//Monster//Mushroom//Dead.png"},
+        {"MushroomDeath", "Assets//Monster//Mushroom//Death.png"},
+        {"MushroomIdle", "Assets//Monster//Mushroom//Idle.png"},
+        {"MushroomProjectileSprite", "Assets//Monster//Mushroom//Projectile_sprite.png"},
+        {"MushroomRun", "Assets//Monster//Mushroom//Run.png"},
+        {"MushroomTakeHit", "Assets//Monster//Mushroom//Take Hit.png"}
+    };
+
+    const std::map<std::string, std::string> SKELETON_TEXTURE_PATHS = {
+        {"SkeletonAttack", "Assets//Monster//Skeleton//Attack.png"},
+        {"SkeletonAttack2", "Assets//Monster//Skeleton//Attack2.png"},
+        {"SkeletonAttack3", "Assets//Monster//Skeleton//Attack3.png"},
+        {"SkeletonDead", "Assets//Monster//Skeleton//Dead.png"},
+        {"SkeletonDeath", "Assets//Monster//Skeleton//Death.png"},
+        {"SkeletonIdle", "Assets//Monster//Skeleton//Idle.png"},
+        {"SkeletonShield", "Assets//Monster//Skeleton//Shield.png"},
+        {"SkeletonSwordSprite", "Assets//Monster//Skeleton//Sword_sprite.png"},
+        {"SkeletonTakeHit", "Assets//Monster//Skeleton//Take Hit.png"},
+        {"SkeletonWalk", "Assets//Monster//Skeleton//Walk.png"}
     };
 
