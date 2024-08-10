@@ -101,7 +101,7 @@ void Level::update(float dt) {
     for (auto monster : _monsters) {
         if (monster) {
             monster->update(dt);
-            if (_knight && monster->findKnightInRange(_knight->getPosition()) && monster->getIsDamageFrame()) {
+            if (_knight && monster->findKnightInRange(_knight->getBody()->getRectShape()) && monster->getIsDamageFrame()) {
                 std::cout << "gay sat thuong\n";
                 _knight->takeDamage(MONSTER_ATTACK_DAMAGE);
                 std::cout << _knight->getHealth() << std::endl;
@@ -112,7 +112,7 @@ void Level::update(float dt) {
         _knight->update(dt);
         if (_knight->getState() == ATTACKING && _knight->getIsDamageFrame()) {
             for (auto monster : _monsters) {
-                if (monster && _knight->findMonsterInRange(monster->getPosition())) {
+                if (monster && _knight->findMonsterInRange(monster->getBody()->getRectShape())) {
                     std::cout << "gay sat thuong\n";
                     monster->takeDamage(KNIGHT_ATTACK_DAMAGE);
                     std::cout << monster->getHealth() << std::endl;
@@ -130,6 +130,7 @@ void Level::render() {
     for (auto monster : _monsters) {
         if (monster) {
             monster->render();
+            monster->renderRectShape();
         }
     }
 

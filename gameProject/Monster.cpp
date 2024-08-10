@@ -100,17 +100,35 @@ void Monster::jump() {
     // Implement logic jump nếu cần
 }
 
-bool Monster::findKnightInRange(const Vector2D& knightPos) {
-    if (state != DEAD) 
-    {
-        float distance = this->getPosition().distance(knightPos);
-        if (distance < MONSTER_ATTACK_RANGE) {
+bool Monster::findKnightInRange(const SDL_Rect& knightRect) {
+    if (state != DEAD && state != DYING && state != TAKING_DAMAGE) {
+        Vector2D monsterPos = this->getPosition();
+        float rangeWidth = MONSTER_ATTACK_RANGE;
+        float rangeHeight = this->getBody()->getRectShape().h;
+
+        SDL_Rect attackRect{};
+
+        if (direction == RIGHT) {
+            attackRect.x = static_cast<int>(monsterPos.getX());
+            attackRect.y = static_cast<int>(monsterPos.getY() - rangeHeight / 2);
+            attackRect.w = static_cast<int>(rangeWidth);
+            attackRect.h = static_cast<int>(rangeHeight);
+        }
+        else if (direction == LEFT) {
+            attackRect.x = static_cast<int>(monsterPos.getX() - rangeWidth);
+            attackRect.y = static_cast<int>(monsterPos.getY() - rangeHeight / 2);
+            attackRect.w = static_cast<int>(rangeWidth);
+            attackRect.h = static_cast<int>(rangeHeight);
+        }
+
+        if (SDL_HasIntersection(&attackRect, &knightRect) != SDL_FALSE) {
             attack();
             return true;
         }
     }
     return false;
 }
+
 
 void Monster::setTextureBasedOnTypeAndState() {
     switch (type) {

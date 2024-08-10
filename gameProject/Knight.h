@@ -3,8 +3,8 @@
 #include "Physic/constants.h"
 #include "Input.h"
 
-const float knightMaxHealth = 50.0f;
-const float ATTACK_RANGE = 200.0f;
+const float knightMaxHealth = 1000.0f;
+const float KNIGHT_ATTACK_RANGE = 100.0f;
 const float KNIGHT_ATTACK_DAMAGE = 30.0f;
 const float DEFAULT_KNIGHT_ATTACK_SPEED = 150;
 
@@ -16,7 +16,7 @@ public:
         maxAttackFrame = attackSpeed * 0.3f;
     }
 
-    bool findMonsterInRange(const Vector2D& monsterPos);
+    bool findMonsterInRange(const SDL_Rect& monsterRect);
 
     void handleInput();
     void handleState();

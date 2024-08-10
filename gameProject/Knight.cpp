@@ -1,8 +1,27 @@
 ﻿#include "Knight.h"
 
-bool Knight::findMonsterInRange(const Vector2D& monsterPos) {
-    float distance = this->getPosition().distance(monsterPos);
-    return (distance < ATTACK_RANGE);
+bool Knight::findMonsterInRange(const SDL_Rect& monsterRect) {
+    Vector2D knightPos = this->getPosition();
+    float rangeWidth = KNIGHT_ATTACK_RANGE;
+    float rangeHeight = this->getBody()->getRectShape().h;
+
+    SDL_Rect attackRect{};
+
+    if (direction == RIGHT) {
+        attackRect.x = static_cast<int>(knightPos.getX());
+        attackRect.y = static_cast<int>(knightPos.getY() - rangeHeight / 2);
+        attackRect.w = static_cast<int>(rangeWidth);
+        attackRect.h = static_cast<int>(rangeHeight);
+    }
+    else if (direction == LEFT) {
+        attackRect.x = static_cast<int>(knightPos.getX() - rangeWidth);
+        attackRect.y = static_cast<int>(knightPos.getY() - rangeHeight / 2);
+        attackRect.w = static_cast<int>(rangeWidth);
+        attackRect.h = static_cast<int>(rangeHeight);
+    }
+
+    // Kiểm tra va chạm giữa phạm vi tấn công và hitbox của quái vật
+    return SDL_HasIntersection(&attackRect, &monsterRect) != SDL_FALSE;
 }
 
 void Knight::handleInput() {

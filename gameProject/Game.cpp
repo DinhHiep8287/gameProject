@@ -106,15 +106,6 @@ void renderBackground() {
     AssetManager::GetInstance()->renderBackground("background_5", 200, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.9);
 }
 
-void renderKnight() {
-    player->render();
-    //SDL_Rect tempRect = { testKnight.getPosition().getX() - testKnight.getTextureWidth()/2, testKnight.getPosition().getY() - testKnight.getTextureHeight()/2, testKnight.getTextureWidth(), testKnight.getTextureHeight()};
-    //AssetManager::GetInstance()->renderRect(tempRect);
-    //AssetManager::GetInstance()->renderRect(testKnight.getBody()->getRectShape());
-    player->getBody()->renderText(0, 0);
-    //testKnight.renderText(0, 0);
-}
-
 void Game::init()
 {
     Engine::initSDL(window, renderer);
@@ -152,6 +143,8 @@ void Game::render()
     level->render();
 
     player->renderText(0, 0);
+
+    player->renderRectShape();
 
     SDL_RenderPresent(renderer);
 }

@@ -84,4 +84,12 @@ public:
         assetManager->renderText(Game::GetInstance()->renderer, velocityText, fontId, color, startX, startY + 200);
         assetManager->renderText(Game::GetInstance()->renderer, accelerationText, fontId, color, startX, startY + 220);
     }
+
+    bool renderRectShape()
+    {
+        SDL_Rect tempRect = { this->getPosition().getX() - this->getTextureWidth() / 2, this->getPosition().getY() - this->getTextureHeight() / 2, this->getTextureWidth(), this->getTextureHeight() };
+        AssetManager::GetInstance()->renderRect(tempRect);
+        AssetManager::GetInstance()->renderRect(this->getBody()->getRectShape());
+        return true;
+    }
 };

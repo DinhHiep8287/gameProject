@@ -36,7 +36,7 @@ public:
 
     MonsterType getType() const { return type; }
 
-    bool findKnightInRange(const Vector2D& knightPos);
+    bool findKnightInRange(const SDL_Rect& knightRect);
 
 private:
     void setTextureBasedOnTypeAndState();
