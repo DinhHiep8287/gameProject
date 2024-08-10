@@ -6,8 +6,7 @@ bool Knight::findMonsterInRange(const Vector2D& monsterPos) {
 }
 
 void Knight::handleInput() {
-    if (state != DEAD && state != DYING)
-    {
+    if (state != DEAD && state != DYING) {
         if (Input::getInstance()->getKeyDown(SDL_SCANCODE_D)) {
             this->getBody()->setForceX(10);
             direction = RIGHT;
@@ -22,7 +21,6 @@ void Knight::handleInput() {
         if (Input::getInstance()->getKeyDown(SDL_SCANCODE_W)) {
             this->jump();
         }
-
         if (Input::getInstance()->getKeyDown(SDL_SCANCODE_J)) {
             attack();
         }
@@ -43,6 +41,15 @@ void Knight::handleState()
 
         if (this->getAnimation()->IsAnimationDone()) {
             state = DEAD; 
+        }
+        return;
+    }
+
+    if (state == TAKING_DAMAGE) {
+        this->setAnimation("KnightTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+        this->getAnimation()->UpdateAnimation();
+        if (this->getAnimation()->IsAnimationDone()) {
+            state = IDLE; 
         }
         return;
     }
@@ -102,6 +109,11 @@ void Knight::handleState()
 }
 
 bool Knight::attack() {
+    if (health <= 0) {
+        state = DYING;
+        return false;
+    }
+
     state = ATTACKING;
     return true;
 }
@@ -112,6 +124,7 @@ bool Knight::takeDamage(float damage) {
     }
 
     this->health -= damage;
+    this->getBody()->unsetVelocity();
     if (this->health <= 0) {
         this->health = 0; 
         state = DYING; 

@@ -1,7 +1,7 @@
 ﻿#include "Monster.h"
 
 void Monster::handleInput() {
-    // Implement quái vật xử lý di chuyển hoặc hành động khác nếu cần
+    // Implement logic xử lý di chuyển hoặc hành động khác nếu cần
 }
 
 void Monster::handleState()
@@ -18,6 +18,16 @@ void Monster::handleState()
 
         if (this->getAnimation()->IsAnimationDone()) {
             state = DEAD; // Chuyển sang trạng thái DEAD khi animation DYING kết thúc
+        }
+        return;
+    }
+
+    if (state == TAKING_DAMAGE) {
+        setTextureBasedOnTypeAndState();
+        this->getAnimation()->UpdateAnimation();
+
+        if (this->getAnimation()->IsAnimationDone()) {
+            state = IDLE;  
         }
         return;
     }
@@ -59,9 +69,13 @@ void Monster::handleState()
     this->getAnimation()->UpdateAnimation();
 }
 
-
 bool Monster::attack()
 {
+    if (health <= 0) {
+        state = DYING;
+        return false;
+    }
+
     state = ATTACKING;
     return true;
 }
@@ -73,8 +87,8 @@ bool Monster::takeDamage(float damage) {
 
     this->health -= damage;
     if (this->health <= 0) {
-        this->health = 0; 
-        state = DYING; 
+        this->health = 0;
+        state = DYING;
         return true;
     }
 
@@ -82,12 +96,12 @@ bool Monster::takeDamage(float damage) {
     return false;
 }
 
-void Monster::jump()
-{
+void Monster::jump() {
+    // Implement logic jump nếu cần
 }
 
 bool Monster::findKnightInRange(const Vector2D& knightPos) {
-    if (state != DEAD)
+    if (state != DEAD) 
     {
         float distance = this->getPosition().distance(knightPos);
         if (distance < MONSTER_ATTACK_RANGE) {
@@ -97,7 +111,6 @@ bool Monster::findKnightInRange(const Vector2D& knightPos) {
     }
     return false;
 }
-
 
 void Monster::setTextureBasedOnTypeAndState() {
     switch (type) {
@@ -110,6 +123,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         }
         else if (state == ATTACKING) {
             this->setAnimation("FlyingEyeAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
+        }
+        else if (state == TAKING_DAMAGE) {
+            this->setAnimation("FlyingEyeTakeHit", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
             this->setAnimation("FlyingEyeDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
@@ -129,6 +145,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         else if (state == ATTACKING) {
             this->setAnimation("GoblinAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
+        else if (state == TAKING_DAMAGE) {
+            this->setAnimation("GoblinTakeHit", SDL_FLIP_NONE, 0, 100, 4, 0);
+        }
         else if (state == DYING) {
             this->setAnimation("GoblinDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
@@ -147,6 +166,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         else if (state == ATTACKING) {
             this->setAnimation("MushroomAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
+        else if (state == TAKING_DAMAGE) {
+            this->setAnimation("MushroomTakeHit", SDL_FLIP_NONE, 0, 100, 4, 0);
+        }
         else if (state == DYING) {
             this->setAnimation("MushroomDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
@@ -164,6 +186,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         }
         else if (state == ATTACKING) {
             this->setAnimation("SkeletonAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
+        }
+        else if (state == TAKING_DAMAGE) {
+            this->setAnimation("SkeletonTakeHit", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
             this->setAnimation("SkeletonDeath", SDL_FLIP_NONE, 0, 100, 4, 0);

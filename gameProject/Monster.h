@@ -4,7 +4,7 @@
 const float DEFAULT_MONSTER_HEALTH = 100.0f;
 const float MONSTER_ATTACK_RANGE = 100.0f;
 const float MONSTER_ATTACK_DAMAGE = 10.0f;
-const int DEFAULT_MONSTER_ATTACK_SPEED = 100;
+const int DEFAULT_MONSTER_ATTACK_SPEED = 200;
 
 class Monster : public Character
 {
