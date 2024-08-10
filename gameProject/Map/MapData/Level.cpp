@@ -70,7 +70,7 @@ bool Level::isCollidingMap(SDL_Rect a, int level) {
     topTile = std::max(0, std::min(topTile, mapHeight - 1));
     botTile = std::max(0, std::min(botTile, mapHeight - 1));
 
-    if (a.x < 0 || a.y < 0 || a.x + a.w > mapWidth * tileSize || a.y + a.h > mapHeight * tileSize) {
+    if (a.x < 0 || a.x + a.w > mapWidth * tileSize) {
         return true;
     }
 

@@ -30,6 +30,7 @@ void Knight::handleInput() {
 void Knight::handleState()
 {
     if (state == DEAD) {
+        this->getBody()->unsetVelocityX();
         this->setAnimation("KnightDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 80, 1, 0);
         this->getAnimation()->UpdateAnimation();
         return;

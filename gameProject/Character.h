@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Object.h"
 #include "Map/MapData/Level.h"
-
+#include "Physic/constants.h"
 enum CharacterState {
     IDLE,
     RUNNING,
@@ -31,6 +31,13 @@ public:
 
     void handleColission(SDL_Rect& rect, const SDL_Rect oldRect, const SDL_Rect newRect,
         const Vector2D oldPosition, const Vector2D newPosition) {
+        
+        // Khi nhân vật rơi xuống vực
+        if (this->getBody()->getRectShape().y + this->getBody()->getRectShape().h > MAP_HEIGHT) {
+            state = DEAD;
+            return;
+        }
+
         rect.x = newRect.x;
         if (Level::isCollidingMap(rect, 0)) {
             this->getBody()->setPosition(oldPosition.getX(), oldPosition.getY());
