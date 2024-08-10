@@ -13,7 +13,7 @@ public:
     Knight(float x, float y, float w, float h, float mass)
         : Character(x, y, w, h, mass, knightMaxHealth, defaultDirection, DEFAULT_KNIGHT_ATTACK_SPEED)
     {
-        maxAttackFrame = attackSpeed / 100 * 30;
+        maxAttackFrame = attackSpeed * 0.3f;
     }
 
     bool findMonsterInRange(const Vector2D& monsterPos);

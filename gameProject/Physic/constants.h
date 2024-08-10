@@ -1,5 +1,13 @@
 ﻿#pragma once
 #include <map>
+#include <vector>
+
+enum MonsterType {
+    FLYING_EYE,
+    GOBLIN,
+    MUSHROOM,
+    SKELETON
+};
 
 const int SIZE = 32;
 
@@ -33,7 +41,7 @@ const dir defaultDirection = RIGHT;
 
 
 
-// Map Data
+// Map 
     //Texture
     const std::map<std::string, std::string> MAP_TEXTURE_PATHS = {
         {"object_1", "Assets//Ob.png"},
@@ -48,11 +56,25 @@ const dir defaultDirection = RIGHT;
 
     };
 
-    //Data
+    // Map Data
     const int NUM_TILE_SET_X = 10; const int NUM_TILE_SET_Y = 6; const int FIRST_ID_TILE_SET = 1;
     const int NUM_OBJECT_1_X = 12; const int NUM_OBJECT_1_Y = 11; const int FIRST_ID_OBJECT_1 = 61;
     const int NUM_OBJECT_2_X = 40; const int NUM_OBJECT_2_Y = 30; const int FIRST_ID_OBJECT_2 = 193;
 
+    // Monster Info
+const std::vector<std::tuple<int, int, int, int, int, MonsterType>> monstersInfo = {
+    {400, 450, 40, 100, MASS, FLYING_EYE},
+    {1250, 500, 40, 100, MASS, GOBLIN},
+    {2700, 550, 40, 100, MASS, SKELETON},
+    {3600, 560, 40, 100, MASS, MUSHROOM},
+    {3100, 200, 40, 100, MASS, GOBLIN},
+    {2300, -110, 40, 100, MASS, SKELETON},
+    {2300, 300, 40, 100, MASS, FLYING_EYE},
+    {1850, 570, 40, 100, MASS, MUSHROOM},
+    {1800, 100, 40, 100, MASS, SKELETON},
+    {1400, 200 , 40, 100, MASS, FLYING_EYE},
+    {3600, 200, 40, 100, MASS, GOBLIN}
+    };
 // Background Path
 const std::map<std::string, std::string> BACKGROUND_PATHS = {
     {"background_1", "Assets//Background//Layers//1.png"},

@@ -11,28 +11,33 @@
 #include "Monster.h"
 Game* Game::instance = nullptr;
 
+enum LayerType {
+    TILE_LAYER,
+    OBJECT_LAYER1,
+    OBJECT_LAYER2,
+    NUM_LAYERS
+};
 // Level
 Level* level = new Level();
-Layer* tileLayer = new Layer(); 
-Layer* objectLayer1 = new Layer(); 
-Layer* objectLayer2 = new Layer();
-
+std::vector<Layer*> layers(NUM_LAYERS);
 
 // Object
 Body testBody;
-Knight testKnight(100, 100, 40, 60, MASS);
+Knight* player;
+std::vector<Monster*> monsters;
 
-Monster monster1(400, 450, 40, 100, MASS, FLYING_EYE);
-Monster monster2(1250, 500, 40, 100, MASS, GOBLIN);
-Monster monster3(2700, 550, 40, 100, MASS, SKELETON);
-Monster monster4(3600, 560, 40, 100, MASS, MUSHROOM);
-Monster monster5(3100, 200, 40, 100, MASS, GOBLIN);
-Monster monster6(2300, -110, 40, 100, MASS, SKELETON);
-Monster monster7(2300, 300, 40, 100, MASS, FLYING_EYE);
-Monster monster8(1850, 570, 40, 100, MASS, MUSHROOM);
-Monster monster9(1800, 100, 40, 100, MASS, SKELETON);
-Monster monster10(1400, 200 , 40, 100, MASS, FLYING_EYE);
-Monster monster11(3600, 200, 40, 100, MASS, GOBLIN);
+void initKnight() {
+    player = new Knight(100, 100, 40, 60, MASS);
+}
+
+void initMonsters() {
+    for (const auto& info : monstersInfo) {
+        int x, y, width, height, mass;
+        MonsterType type;
+        std::tie(x, y, width, height, mass, type) = info;
+        monsters.push_back(new Monster(x, y, width, height, mass, type));
+    }
+}
 //
 void initBackground() {
     std::cout << "--Khoi tao Background: " << std::endl;
@@ -72,28 +77,25 @@ void initMapTexture() {
 
 void initLevelData() {
     std::cout << "--Khoi tao du lieu ma tran map: " << std::endl;
+    layers[TILE_LAYER] = new Layer();
+    layers[OBJECT_LAYER1] = new Layer();
+    layers[OBJECT_LAYER2] = new Layer();
 
-    tileLayer->loadLayer(MAP_DATA_PATHS.at("tile_layer"), "tile_set", NUM_TILE_SET_X, NUM_TILE_SET_Y, FIRST_ID_TILE_SET);
-    objectLayer1->loadLayer(MAP_DATA_PATHS.at("object_1_layer"), "object_1", NUM_OBJECT_1_X, NUM_OBJECT_1_Y, FIRST_ID_OBJECT_1);
-    objectLayer2->loadLayer(MAP_DATA_PATHS.at("object_2_layer"), "object_2", NUM_OBJECT_2_X, NUM_OBJECT_2_Y, FIRST_ID_OBJECT_2);
-    level->loadLayers({tileLayer, objectLayer1, objectLayer2});
+    layers[TILE_LAYER]->loadLayer(MAP_DATA_PATHS.at("tile_layer"), "tile_set", NUM_TILE_SET_X, NUM_TILE_SET_Y, FIRST_ID_TILE_SET);
+    layers[OBJECT_LAYER1]->loadLayer(MAP_DATA_PATHS.at("object_1_layer"), "object_1", NUM_OBJECT_1_X, NUM_OBJECT_1_Y, FIRST_ID_OBJECT_1);
+    layers[OBJECT_LAYER2]->loadLayer(MAP_DATA_PATHS.at("object_2_layer"), "object_2", NUM_OBJECT_2_X, NUM_OBJECT_2_Y, FIRST_ID_OBJECT_2);
+
+    level->loadLayers(layers);
+
     Level::loadMatrix(MAP_DATA_PATHS.at("tile_layer"));
 
     // Thêm Knight vào Level
-    level->addKnight(&testKnight);
+    level->addKnight(player);
 
     // Thêm Monster vào Level
-    level->addMonster(&monster1);
-    level->addMonster(&monster2);
-    level->addMonster(&monster3);
-    level->addMonster(&monster4);
-    level->addMonster(&monster5);
-    level->addMonster(&monster6);
-    level->addMonster(&monster7);
-    level->addMonster(&monster8);
-    level->addMonster(&monster9);
-    level->addMonster(&monster10);
-    level->addMonster(&monster11);
+    for (auto& monster : monsters) {
+        level->addMonster(monster);
+    }
 }
 
 void renderBackground() {
@@ -105,35 +107,21 @@ void renderBackground() {
 }
 
 void renderKnight() {
-    testKnight.render();
+    player->render();
     //SDL_Rect tempRect = { testKnight.getPosition().getX() - testKnight.getTextureWidth()/2, testKnight.getPosition().getY() - testKnight.getTextureHeight()/2, testKnight.getTextureWidth(), testKnight.getTextureHeight()};
     //AssetManager::GetInstance()->renderRect(tempRect);
     //AssetManager::GetInstance()->renderRect(testKnight.getBody()->getRectShape());
-    testKnight.getBody()->renderText(0, 0);
+    player->getBody()->renderText(0, 0);
     //testKnight.renderText(0, 0);
 }
-
-void renderMonster() {
-    monster1.render();
-    //SDL_Rect tempRect = { testMonster.getPosition().getX() - testMonster.getTextureWidth() / 2, testMonster.getPosition().getY() - testMonster.getTextureHeight() / 2, testMonster.getTextureWidth(), testMonster.getTextureHeight() };
-    //AssetManager::GetInstance()->renderRect(testMonster.getBody()->getRectShape());
-    //AssetManager::GetInstance()->renderRect(tempRect);
-    //testMonster.renderText(0, 0);
-}
-
-void renderTest() {
-    // init test Body
-    SDL_Rect fillRect = { testBody.getPosition()->getX() - Camera::getInstance()->position.getX(), testBody.getPosition()->getY() - Camera::getInstance()->position.getY() , 20, 20 }; // Một hình chữ nhật đại diện cho Body
-    SDL_SetRenderDrawColor(Game::GetInstance()->renderer, 0, 0, 255, 255);
-    SDL_RenderFillRect(Game::GetInstance()->renderer, &fillRect);
-}
-
 
 void Game::init()
 {
     Engine::initSDL(window, renderer);
     Engine::initTTF();
 
+    initKnight();
+    initMonsters();
     initFont();
     initBackground();
     initKnightTexture();
@@ -144,17 +132,13 @@ void Game::init()
     initMapTexture();
     initLevelData();
 
-    Camera::getInstance()->setPoint(testKnight.getBody()->getPosition());
+    Camera::getInstance()->setPoint(player->getBody()->getPosition());
 }
 
 void Game::update()
 {
-    /*testKnight.update(deltaTime);
-    testMonster.update(deltaTime);*/
     level->update(deltaTime);
     Camera::getInstance()->update(deltaTime);
-
-
 }
 
 void Game::render()
@@ -165,17 +149,9 @@ void Game::render()
 
     renderBackground();
 
-    //level->drawLevel();
-
     level->render();
 
-    testKnight.renderText(0, 0);
-
-    //renderKnight();
-
-    //renderMonster();
-
-    //testMonster.renderText(0,0); 
+    player->renderText(0, 0);
 
     SDL_RenderPresent(renderer);
 }

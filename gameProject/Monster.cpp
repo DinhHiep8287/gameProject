@@ -12,7 +12,17 @@ void Monster::handleState()
         return;
     }
 
-    if(state == ATTACKING) {
+    if (state == DYING) {
+        setTextureBasedOnTypeAndState();
+        this->getAnimation()->UpdateAnimation();
+
+        if (this->getAnimation()->IsAnimationDone()) {
+            state = DEAD; // Chuyển sang trạng thái DEAD khi animation DYING kết thúc
+        }
+        return;
+    }
+
+    if (state == ATTACKING) {
         attackFrame++;
         setTextureBasedOnTypeAndState();
         this->getAnimation()->UpdateAnimation();
@@ -38,14 +48,9 @@ void Monster::handleState()
 
     switch (state) {
     case IDLE:
-        this->setTextureBasedOnTypeAndState();
-        break;
     case RUNNING:
-        this->setTextureBasedOnTypeAndState();
-        break;
     case ATTACKING:
-        this->setTextureBasedOnTypeAndState();
-        break;
+    case DYING:
     case DEAD:
         this->setTextureBasedOnTypeAndState();
         break;
@@ -54,6 +59,7 @@ void Monster::handleState()
     this->getAnimation()->UpdateAnimation();
 }
 
+
 bool Monster::attack()
 {
     state = ATTACKING;
@@ -61,14 +67,14 @@ bool Monster::attack()
 }
 
 bool Monster::takeDamage(float damage) {
-    if (state == DEAD) {
+    if (state == DEAD || state == DYING) {
         return false;
     }
 
     this->health -= damage;
     if (this->health <= 0) {
-        this->health = 0; // Đảm bảo máu không âm
-        state = DEAD;
+        this->health = 0; 
+        state = DYING; 
         return true;
     }
 
@@ -105,6 +111,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         else if (state == ATTACKING) {
             this->setAnimation("FlyingEyeAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
+        else if (state == DYING) {
+            this->setAnimation("FlyingEyeDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
+        }
         else if (state == DEAD) {
             this->setAnimation("FlyingEyeDead", SDL_FLIP_NONE, 0, 100, 1, 0);
         }
@@ -119,6 +128,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         }
         else if (state == ATTACKING) {
             this->setAnimation("GoblinAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
+        }
+        else if (state == DYING) {
+            this->setAnimation("GoblinDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("GoblinDead", SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -135,6 +147,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         else if (state == ATTACKING) {
             this->setAnimation("MushroomAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
         }
+        else if (state == DYING) {
+            this->setAnimation("MushroomDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
+        }
         else if (state == DEAD) {
             this->setAnimation("MushroomDead", SDL_FLIP_NONE, 0, 100, 1, 0);
         }
@@ -149,6 +164,9 @@ void Monster::setTextureBasedOnTypeAndState() {
         }
         else if (state == ATTACKING) {
             this->setAnimation("SkeletonAttack", SDL_FLIP_NONE, 0, attackSpeed, 8, 0);
+        }
+        else if (state == DYING) {
+            this->setAnimation("SkeletonDeath", SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("SkeletonDead", SDL_FLIP_NONE, 0, 100, 1, 0);

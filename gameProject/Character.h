@@ -9,6 +9,7 @@ enum CharacterState {
     ATTACKING,
     FALLING,
     TAKING_DAMAGE,
+    DYING,
     DEAD
 };
 
