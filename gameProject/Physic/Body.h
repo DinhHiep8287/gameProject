@@ -64,7 +64,9 @@ public:
     void setRectHeight(float h) { _rectShape.h = static_cast<int>(h); updateRectShape(); }
     void setRectX(float x) { _rectShape.x = static_cast<int>(x); }
     void setRectY(float y) { _rectShape.y = static_cast<int>(y); }
-
+    void setVelocity(const Vector2D& newVelocity) {
+        this->_velocity = newVelocity;
+    }
     // Getter
     float getMass() const { return _mass; }
     float getGravity() const { return _gravity; }

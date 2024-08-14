@@ -85,7 +85,7 @@ bool Level::isCollidingMap(SDL_Rect a, int level) {
     return false;
 }
 
-const std::vector<std::vector<std::vector<int>>>& Level::getMatrix() const {
+std::vector<std::vector<std::vector<int>>> Level::getMatrix(){
     return colisionLayerMatrix;
 }
 

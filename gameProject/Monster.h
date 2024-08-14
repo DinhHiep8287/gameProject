@@ -1,10 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "Character.h"
 
 const float DEFAULT_MONSTER_HEALTH = 100.0f;
 const float MONSTER_ATTACK_RANGE = 100.0f;
 const float MONSTER_ATTACK_DAMAGE = 10.0f;
-const int DEFAULT_MONSTER_ATTACK_SPEED = 200;
+const float DEFAULT_MONSTER_ATTACK_SPEED = 200.0f;
+const float DEFAULT_MONSTER_SPEED = 10.0f;
 
 class Monster : public Character
 {
@@ -17,7 +18,7 @@ public:
     {
         maxAttackFrame = attackSpeed / 100 * 43;
     }
-
+    
     void handleInput();
 
     void handleState();

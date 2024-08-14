@@ -11,12 +11,6 @@
 #include "Monster.h"
 Game* Game::instance = nullptr;
 
-enum LayerType {
-    TILE_LAYER,
-    OBJECT_LAYER1,
-    OBJECT_LAYER2,
-    NUM_LAYERS
-};
 // Level
 Level* level = new Level();
 std::vector<Layer*> layers(NUM_LAYERS);
@@ -27,7 +21,7 @@ Knight* player;
 std::vector<Monster*> monsters;
 
 void initKnight() {
-    player = new Knight(100, 100, 40, 60, MASS);
+    player = new Knight(1000, 700, 40, 60, MASS);
 }
 
 void initMonsters() {
@@ -143,6 +137,7 @@ void Game::render()
     level->render();
 
     player->renderText(0, 0);
+    //level->getMonsters().at(1)->renderText(0, 0);
 
     player->renderRectShape();
 

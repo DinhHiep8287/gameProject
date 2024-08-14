@@ -65,15 +65,6 @@ void Knight::handleState()
         return;
     }
 
-    if (state == TAKING_DAMAGE) {
-        this->setAnimation("KnightTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
-        this->getAnimation()->UpdateAnimation();
-        if (this->getAnimation()->IsAnimationDone()) {
-            state = IDLE; 
-        }
-        return;
-    }
-
     if (state == ATTACKING) {
         attackFrame++;
         this->setAnimation("KnightAttack", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, attackSpeed, 6, 0);
@@ -86,12 +77,25 @@ void Knight::handleState()
             state = IDLE; 
         }
 
-        if (maxAttackFrame != 0 && attackFrame == int(maxAttackFrame / 2) ) {
+        if (attackFrame == int(maxAttackFrame / 2) ) {
             isDamageFrame = true;
         }
         return;
     }
+
+    if (state == TAKING_DAMAGE) {
+        this->setAnimation("KnightTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+        this->getAnimation()->UpdateAnimation();
+        if (this->getAnimation()->IsAnimationDone()) {
+            state = IDLE;
+        }
+        return;
+    }
     
+    // Nếu nhân vật ngừng tấn công, reset attackFrame về 0
+    attackFrame = 0;
+
+
     if (!this->getBody()->isGrounded()) {
         if (this->getBody()->getVelocity().getY() < 0) {
             state = JUMPING;
@@ -151,6 +155,10 @@ bool Knight::takeDamage(float damage) {
         return true;
     }
 
+    if (state == ATTACKING) {
+        attackFrame = 0;
+    }
+
     state = TAKING_DAMAGE;
     return false;
 }
@@ -170,6 +178,7 @@ bool Knight::update(float dt)
     SDL_Rect rect = this->getBody()->getRectShape();
     // Xử lý di chuyển
     handleInput();
+    // Set và cập nhật animation
     handleState();    
     // Cập nhật cơ thể
     this->getBody()->update(dt);    
@@ -177,9 +186,6 @@ bool Knight::update(float dt)
     SDL_Rect newRect = this->getBody()->getRectShape();
     // Xử lý va chạm
     handleColission(rect, oldRect, newRect, oldPosition, newPosition);
-    // Set và cập nhật animation
-    
-
     return true;
 }
 

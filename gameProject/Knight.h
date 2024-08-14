@@ -3,15 +3,15 @@
 #include "Physic/constants.h"
 #include "Input.h"
 
-const float knightMaxHealth = 1000.0f;
+const float DEFAULT_KNIGHT_MAX_HEALTH = 1000.0f;
 const float KNIGHT_ATTACK_RANGE = 100.0f;
 const float KNIGHT_ATTACK_DAMAGE = 30.0f;
-const float DEFAULT_KNIGHT_ATTACK_SPEED = 150;
+const float DEFAULT_KNIGHT_ATTACK_SPEED = 200;
 
 class Knight : public Character {
 public:
     Knight(float x, float y, float w, float h, float mass)
-        : Character(x, y, w, h, mass, knightMaxHealth, defaultDirection, DEFAULT_KNIGHT_ATTACK_SPEED)
+        : Character(x, y, w, h, mass, DEFAULT_KNIGHT_MAX_HEALTH, defaultDirection, DEFAULT_KNIGHT_ATTACK_SPEED)
     {
         maxAttackFrame = attackSpeed * 0.3f;
     }
