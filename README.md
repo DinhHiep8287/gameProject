@@ -14,6 +14,7 @@
 * **Nguồn đồ họa** : 
 
   - Knight <player> : https://luizmelo.itch.io/hero-knight-2
+    
     [![knight.png](https://i.postimg.cc/gjB3Rkkt/knight.png)](https://postimg.cc/64n7xKZC)  
 
   - Quái Vật : https://luizmelo.itch.io/monsters-creatures-fantasy
@@ -30,13 +31,14 @@
                  
     [![tiled.png](https://i.postimg.cc/Vs3qYvp5/tiled.png)](https://postimg.cc/t7NZkqXH)             
 * **Những thứ cần update:**
-    + Nhân vật rơi xuống vực chết
-    + Thêm hoạt ảnh khi nhân vật chết
+    + ~~Nhân vật rơi xuống vực chết~~
+    + ~~Sửa tầm tấn công~~
+    + ~~Thêm hoạt ảnh khi nhận sát thương~~
+    + ~~Thêm hoạt ảnh khi nhân vật chết~~
     + Cho quái vật di chuyển
     + Giết quái rơi ra vật phẩm: Hồi máu, tăng chỉ số, ...
     + Thêm Menu
-    + Thêm Thanh máu
+    + Thêm Thanh máu + Điểm
     + Thêm chỉ số
     + Thêm âm thanh
     + Thêm gameOver + Replay
-                 
