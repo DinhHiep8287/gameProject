@@ -21,15 +21,15 @@ Knight* player;
 std::vector<Monster*> monsters;
 
 void initKnight() {
-    player = new Knight(1000, 700, 40, 60, MASS);
+    player = new Knight(250, 700, 40, 60, MASS);
 }
 
 void initMonsters() {
     for (const auto& info : monstersInfo) {
-        int x, y, width, height, mass;
+        int x, y, mass;
         MonsterType type;
-        std::tie(x, y, width, height, mass, type) = info;
-        monsters.push_back(new Monster(x, y, width, height, mass, type));
+        std::tie(x, y, mass, type) = info;
+        monsters.push_back(new Monster(x, y, mass, type));
     }
 }
 //

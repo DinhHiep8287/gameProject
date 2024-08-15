@@ -7,16 +7,51 @@ const float MONSTER_ATTACK_DAMAGE = 10.0f;
 const float DEFAULT_MONSTER_ATTACK_SPEED = 200.0f;
 const float DEFAULT_MONSTER_SPEED = 10.0f;
 
+const float FLYING_EYE_WIDTH = 40.0f;
+const float GOBLIN_WIDTH = 40.0f;
+const float MUSHROOM_WIDTH = 40.0f;
+const float SKELETON_WIDTH = 40.0f;
+const float DEFAULT_MONSTER_WIDTH = 40.0f;
+
+
+const float FLYING_EYE_HEIGHT = 80.0f;
+const float GOBLIN_HEIGHT = 90.0f;
+const float MUSHROOM_HEIGHT = 90.0f;
+const float SKELETON_HEIGHT = 100.0f;
+const float DEFAULT_MONSTER_HEIGHT = 80.0f;
+
+
 class Monster : public Character
 {
 private:
     MonsterType type;
 
 public:
-    Monster(float x, float y, float w, float h, float mass, MonsterType type)
-        : Character(x, y, w, h, mass, DEFAULT_MONSTER_HEALTH, defaultDirection, DEFAULT_MONSTER_ATTACK_SPEED), type(type)
+    Monster(float x, float y, float mass, MonsterType type)
+        : Character(x, y, GetWidthBasedOnType(type), GetHeightBasedOnType(type), mass, DEFAULT_MONSTER_HEALTH, defaultDirection, DEFAULT_MONSTER_ATTACK_SPEED), type(type)
     {
         maxAttackFrame = attackSpeed / 100 * 43;
+    }
+
+    static float GetWidthBasedOnType(MonsterType type) {
+        switch (type) {
+        case FLYING_EYE: return FLYING_EYE_WIDTH;
+        case GOBLIN: return GOBLIN_WIDTH;
+        case MUSHROOM: return MUSHROOM_WIDTH;
+        case SKELETON: return SKELETON_WIDTH;
+        default: return DEFAULT_MONSTER_WIDTH;
+        }
+    }
+
+    // Hàm trả về chiều cao dựa trên loại quái vật
+    static float GetHeightBasedOnType(MonsterType type) {
+        switch (type) {
+        case FLYING_EYE: return FLYING_EYE_HEIGHT;
+        case GOBLIN: return GOBLIN_HEIGHT;
+        case MUSHROOM: return MUSHROOM_HEIGHT;
+        case SKELETON: return SKELETON_HEIGHT;
+        default: return DEFAULT_MONSTER_HEIGHT;
+        }
     }
     
     void handleInput();

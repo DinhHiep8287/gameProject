@@ -1,10 +1,10 @@
 ﻿#include "Monster.h"
 
 void Monster::handleInput() {
-    if (direction == RIGHT && state == RUNNING) {
+    if (direction == RIGHT && state == RUNNING ) {
         this->getBody()->setVelocity(Vector2D(DEFAULT_MONSTER_SPEED, this->getBody()->getVelocity().getY()));
     }
-    if (direction == LEFT) {
+    if (direction == LEFT && state == RUNNING) {
         this->getBody()->setVelocity(Vector2D(-DEFAULT_MONSTER_SPEED, this->getBody()->getVelocity().getY()));
     }
     // Kiểm tra nếu quái vật đến rìa platform
@@ -115,6 +115,7 @@ void Monster::setTextureBasedOnTypeAndState() {
 void Monster::handleState()
 {
     if (state == DEAD) {
+        getBody()->unsetVelocity();
         setTextureBasedOnTypeAndState();
         this->getAnimation()->UpdateAnimation();
         return;
@@ -193,6 +194,7 @@ void Monster::handleState()
     }
 }
 
+
 bool Monster::attack()
 {
     if (health <= 0) {
@@ -260,17 +262,17 @@ bool Monster::findKnightInRange(const SDL_Rect& knightRect) {
             attackRect.h = static_cast<int>(rangeHeight);
         }
 
+        // Chỉ kiểm tra tầm tấn công nếu quái vật không đang tấn công
         if (SDL_HasIntersection(&attackRect, &knightRect) != SDL_FALSE) {
             attack();
             return true;
         }
-        else {
+        else if (state != ATTACKING) {
             state = RUNNING;
         }
     }
     return false;
 }
-
 
 
 
