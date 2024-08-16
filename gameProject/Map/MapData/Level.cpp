@@ -136,6 +136,7 @@ void Level::render() {
 
     if (_knight) {
         _knight->render();
+        _knight->renderRectShape();
     }
 }
 

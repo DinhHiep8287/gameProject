@@ -95,8 +95,20 @@ const int backgroundWidth = 4028;
 const int backgroundHeight = 800;
 
 //Font Path
-const std::map<std::string, std::string> FONTS_PATHS = {
-    {"default", "Assets//fonts//default.ttf"}
+const std::map<std::string, std::pair<std::string, int>> FONTS_PATHS = {
+    {"default", {"Assets//fonts//default.ttf", 20}},
+    {"fontGame", {"Assets//fonts//fontGame.ttf", 20}},
+    {"DungeonFont", {"Assets//fonts//DungeonFont.ttf", 100}}
+};
+
+//Music & Sound Path 
+const std::map<std::string, std::string> MUSIC_PATHS = {
+    {"gameMusic", "Assets//sound//music//GameMusic.wav"},
+    {"menuMusic", "Assets//sound//music//MenuMusic.wav"}
+};
+
+const std::map<std::string, std::string> SOUND_PATHS = {
+    {"button", "Assets//button//MI_SFX 01.wav"}
 };
 
 const int DEFAULT_FONT_SIZE = 20;
@@ -161,5 +173,11 @@ const int DEFAULT_FONT_SIZE = 20;
         {"SkeletonSwordSprite", "Assets//Monster//Skeleton//Sword_sprite.png"},
         {"SkeletonTakeHit", "Assets//Monster//Skeleton//Take Hit.png"},
         {"SkeletonWalk", "Assets//Monster//Skeleton//Walk.png"}
+    };
+
+    const std::map<std::string, std::string> MENU_TEXTURE_PATHS = {
+        {"panelTexture", "Assets//button//png@4x//Button-Back//Rect//Panel@4x.png"},
+        {"buttonNormalTexture", "Assets//button//png@4x//Button-Back//Rect//Default@4x.png"},
+        {"buttonHoveredTexture", "Assets//button//png@4x//Button-Back//Rect//Hover@4x.png"},
     };
 

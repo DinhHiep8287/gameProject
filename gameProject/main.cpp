@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     FrameRateController frameRateController(FPS);
     Game::GetInstance()->init();
     // GAMELOOP
-    while (Game::GetInstance()->isRunning())
+    while (Game::GetInstance()->state != EXIT)
     {
         frameRateController.startFrame();
 

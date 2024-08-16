@@ -40,10 +40,45 @@ bool AssetManager::loadSound(std::string id, std::string fileName)
         std::cerr << "Failed to load sound: " << Mix_GetError() << std::endl;
         return false;
     }
+    else {
+        std::cout << "Load thanh cong: " << fileName << std::endl;
+    }
 
     _soundMap[id] = sound;
     return true;
 }
+
+bool AssetManager::loadMusic(std::string id, std::string fileName)
+{
+    Mix_Music* music = Mix_LoadMUS(fileName.c_str());
+    if (!music) {
+        std::cerr << "Failed to load music: " << Mix_GetError() << std::endl;
+        return false;
+    }
+    else {
+        std::cout << "Load thanh cong: " << fileName << std::endl;
+    }
+    _musicMap[id] = music;
+    return true;
+}
+
+TTF_Font* AssetManager::getFont(const std::string& fontId)
+{
+    // Tìm kiếm font trong _fontMap theo id
+    auto it = _fontMap.find(fontId);
+
+    if (it != _fontMap.end()) {
+        // Nếu tìm thấy, trả về font
+        return it->second;
+    }
+    else {
+        // Nếu không tìm thấy, in ra thông báo lỗi và trả về nullptr
+        std::cerr << "Font not found: " << fontId << std::endl;
+        return nullptr;
+    }
+}
+
+
 void AssetManager::dropTexture(std::string id)
 {
     SDL_DestroyTexture(_textureMap[id]);
@@ -92,6 +127,24 @@ void AssetManager::renderObject(std::string id, float textureX, float textureY, 
     SDL_RenderCopy(Game::GetInstance()->renderer, _textureMap[id], &srcrect, &dstrect);
 }
 
+void AssetManager::renderTextureRect(SDL_Renderer* renderer, std::string textureId, int x, int y, int w, int h) {
+    // Tìm kiếm texture trong _textureMap theo id
+    auto it = _textureMap.find(textureId);
+
+    if (it == _textureMap.end()) {
+        // Nếu không tìm thấy, in ra thông báo lỗi và return
+        std::cerr << "Texture not found: " << textureId << std::endl;
+        return;
+    }
+
+    SDL_Texture* texture = it->second;
+
+    SDL_Rect destRect = { x, y, w, h };
+
+    // Render texture
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+}
+
 void AssetManager::renderRect(SDL_Rect rect)
 {
     SDL_SetRenderDrawColor(Game::GetInstance()->renderer, 255, 255, 255, 255);
@@ -105,6 +158,20 @@ void AssetManager::renderRect(SDL_Rect rect)
     SDL_SetRenderDrawColor(Game::GetInstance()->renderer, 0, 0, 0, 255);
 }
 
+void AssetManager::renderRect(SDL_Rect rect, SDL_Color color)
+{
+    SDL_SetRenderDrawColor(Game::GetInstance()->renderer, color.r, color.g, color.b, color.a);
+    SDL_Rect tempRect = { rect.x - Camera::getInstance()->position.getX(), rect.y - Camera::getInstance()->position.getY(),
+                        rect.w, rect.h };
+
+    if (SDL_RenderDrawRect(Game::GetInstance()->renderer, &tempRect) != 0) {
+        std::cerr << "SDL_RenderDrawRect Error: " << SDL_GetError() << std::endl;
+    }
+
+    // Reset màu vẽ lại sau khi hoàn thành
+    SDL_SetRenderDrawColor(Game::GetInstance()->renderer, 0, 0, 0, 255);
+}
+
 void AssetManager::playSound(std::string id)
 {
     Mix_Chunk* sound = _soundMap[id];
@@ -115,6 +182,31 @@ void AssetManager::playSound(std::string id)
 
     Mix_PlayChannel(-1, sound, 0);
 }
+
+void AssetManager::playMusic(std::string id, int loop)
+{
+    if (idMusicPlaying != id) 
+    {
+        std::cout << "music play";
+        stopMusic();
+        Mix_Music* music = _musicMap[id];
+        if (!music) {
+            std::cerr << "Music not found: " << id << std::endl;
+            return;
+        }
+
+        if (Mix_PlayMusic(music, loop) == -1) {
+            std::cerr << "Mix_PlayMusic: " << Mix_GetError() << std::endl;
+        }
+        idMusicPlaying = id;
+    }
+}
+
+void AssetManager::stopMusic()
+{
+    Mix_HaltMusic();
+}
+
 
 void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::string fontId, SDL_Color color, int x, int y)
 {
@@ -138,6 +230,34 @@ void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::
     }
 
     SDL_Rect destRect = { x, y, surface->w, surface->h };
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
+
+void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::string fontId, SDL_Color color, int x, int y, int w, int h)
+{
+    TTF_Font* font = _fontMap[fontId];
+    if (!font) {
+        std::cerr << "Font not found: " << fontId << std::endl;
+        return;
+    }
+
+    SDL_Surface* surface = TTF_RenderText_Solid(font, message.c_str(), color);
+    if (!surface) {
+        std::cerr << "Failed to create surface: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        SDL_FreeSurface(surface);
+        return;
+    }
+
+    SDL_Rect destRect = { x, y, w, h };
     SDL_RenderCopy(renderer, texture, nullptr, &destRect);
 
     SDL_FreeSurface(surface);

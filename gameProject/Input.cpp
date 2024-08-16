@@ -7,24 +7,24 @@ Input::Input()
     pKeyStates = SDL_GetKeyboardState(nullptr);
 }
 
-void Input::listen()
+void Input::listen(SDL_Event& e)
 {
-    while (SDL_PollEvent(&e))
+    switch (e.type)
     {
-        switch (e.type)
-        {
-        case SDL_QUIT:
+    case SDL_QUIT:
+        Game::GetInstance()->quit();
+        break;
+    case SDL_KEYDOWN:
+        if (e.key.keysym.sym == SDLK_ESCAPE) {
             Game::GetInstance()->quit();
-            break;
-        case SDL_KEYDOWN:
-            keyDown();
-            break;
-        case SDL_KEYUP: 
-            keyUp();
-            break;
-        default:
-            break;
         }
+        keyDown();
+        break;
+    case SDL_KEYUP:
+        keyUp();
+        break;
+    default:
+        break;
     }
 }
 

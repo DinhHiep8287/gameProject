@@ -17,7 +17,7 @@ const float DEFAULT_MONSTER_WIDTH = 40.0f;
 const float FLYING_EYE_HEIGHT = 80.0f;
 const float GOBLIN_HEIGHT = 90.0f;
 const float MUSHROOM_HEIGHT = 90.0f;
-const float SKELETON_HEIGHT = 100.0f;
+const float SKELETON_HEIGHT = 90.0f;
 const float DEFAULT_MONSTER_HEIGHT = 80.0f;
 
 

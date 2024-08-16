@@ -17,12 +17,15 @@ public:
     std::map<std::string, SDL_Texture*> _textureMap;
     std::map<std::string, TTF_Font*> _fontMap;
     std::map<std::string, Mix_Chunk*> _soundMap;
-
+    std::map<std::string, Mix_Music*> _musicMap;
+    std::string idMusicPlaying = "";
 
     bool loadTexture(std::string id, std::string fileName);
     bool loadFont(std::string id, std::string fileName, int fontSize);
     bool loadSound(std::string id, std::string fileName);
+    bool loadMusic(std::string id, std::string fileName);
 
+    TTF_Font* getFont(const std::string& fontId);
 
     void dropTexture(std::string id);
     void dropFont(std::string id);
@@ -34,16 +37,25 @@ public:
 
     void renderObject(std::string id, float textureX, float textureY, float width, float height, float mapX, float mapY);
 
+    void renderTextureRect(SDL_Renderer* renderer, std::string textureId, int x, int y, int w, int h);
+
     void renderRect(SDL_Rect rect);
+
+    void renderRect(SDL_Rect rect, SDL_Color color);
 
     void playSound(std::string id);
 
+    void playMusic(std::string id, int loop);
+
+    void stopMusic();
+
     void renderText(SDL_Renderer* renderer, std::string message, std::string fontId, SDL_Color color, int x, int y);
+
+    void renderText(SDL_Renderer* renderer, std::string message, std::string fontId, SDL_Color color, int x, int y, int w, int h);
 
     float textureWidth(std::string id);
     
     float textureHeight(std::string id);
-    
 
 };
 

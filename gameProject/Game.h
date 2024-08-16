@@ -1,5 +1,14 @@
 #pragma once
 #include <SDL.h>
+
+enum GameState {
+    MENU,
+    PLAYING,
+    PAUSED,
+    SETTINGS,
+    EXIT
+};
+
 class Game
 {
 public:
@@ -9,11 +18,8 @@ public:
     }
     SDL_Window* window;
     SDL_Renderer* renderer;
-    bool running = true;
-    bool menu = true;
-    
-    bool isRunning() { return running; }
-    bool isMenu() { return menu; }
+    GameState state = MENU;
+
     void init();
     void quit();
     void update();
