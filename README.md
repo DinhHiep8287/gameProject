@@ -35,10 +35,10 @@
     + ~~Sửa tầm tấn công~~
     + ~~Thêm hoạt ảnh khi nhận sát thương~~
     + ~~Thêm hoạt ảnh khi nhân vật chết~~
-    + Cho quái vật di chuyển
+    + ~~Cho quái vật di chuyển~~
     + Giết quái rơi ra vật phẩm: Hồi máu, tăng chỉ số, ...
-    + Thêm Menu
+    + ~~Thêm Menu~~
     + Thêm Thanh máu + Điểm
     + Thêm chỉ số
-    + Thêm âm thanh
+    + ~~Thêm âm thanh~~
     + Thêm gameOver + Replay
