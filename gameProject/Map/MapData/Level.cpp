@@ -97,6 +97,10 @@ void Level::addMonster(Monster* monster) {
     _monsters.push_back(monster);
 }
 
+void Level::resetLevel()
+{
+}
+
 void Level::update(float dt) {
     for (auto monster : _monsters) {
         if (monster) {
@@ -137,6 +141,10 @@ void Level::render() {
     if (_knight) {
         _knight->render();
         _knight->renderRectShape();
+    }
+
+    if (pauseButton) {
+        pauseButton->render(Game::GetInstance()->renderer);
     }
 }
 

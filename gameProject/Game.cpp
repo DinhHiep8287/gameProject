@@ -13,6 +13,7 @@
 // Game
 Game* Game::instance = nullptr;
 Menu mainMenu;
+Setting settingsMenu(100, 100, 300, 400);
 // Level
 Level* level = new Level();
 std::vector<Layer*> layers(NUM_LAYERS);
@@ -43,7 +44,7 @@ void initMenuItems() {
     int panelY = (NUM_SCREEN_Y * SIZE - panelHeight) / 2;
 
     // Thêm Panel vào Menu
-    mainMenu.addPanel(std::make_unique<Panel>("Panel", "panelTexture", panelX, panelY, panelWidth, panelHeight));
+    mainMenu.addPanel(std::make_unique<Panel>("Panel", "", "panelTexture", panelX, panelY, panelWidth, panelHeight));
 
     // Tính toán vị trí của các nút
     int buttonWidth = SIZE * 6; // Ví dụ: mỗi nút có chiều rộng 6 ô
@@ -55,13 +56,13 @@ void initMenuItems() {
     int quitButtonY = settingsButtonY + buttonHeight + SIZE * 0.5; // Vị trí Y của nút "Quit" dưới nút "Settings" một khoảng nhỏ
 
     // Thêm Button "Start" vào Menu
-    mainMenu.addButton(std::make_unique<Button>("Start", "buttonNormalTexture", "buttonHoveredTexture", buttonX, startButtonY, buttonWidth, buttonHeight));
+    mainMenu.addButton(std::make_unique<Button>("Start", "Start", "buttonNormalTexture", "buttonHoveredTexture", buttonX, startButtonY, buttonWidth, buttonHeight));
 
     // Thêm Button "Settings" vào Menu
-    mainMenu.addButton(std::make_unique<Button>("Settings", "buttonNormalTexture", "buttonHoveredTexture", buttonX, settingsButtonY, buttonWidth, buttonHeight));
+    mainMenu.addButton(std::make_unique<Button>("Settings", "Settings", "buttonNormalTexture", "buttonHoveredTexture", buttonX, settingsButtonY, buttonWidth, buttonHeight));
 
     // Thêm Button "Quit" vào Menu
-    mainMenu.addButton(std::make_unique<Button>("Quit", "buttonNormalTexture", "buttonHoveredTexture", buttonX, quitButtonY, buttonWidth, buttonHeight));
+    mainMenu.addButton(std::make_unique<Button>("Quit", "Quit", "buttonNormalTexture", "buttonHoveredTexture", buttonX, quitButtonY, buttonWidth, buttonHeight));
 }
 
 void initKnight() {
@@ -195,23 +196,28 @@ void Game::render()
 
     SDL_RenderClear(renderer);
 
-    if (state == PLAYING) 
+    if (state == PLAYING)
     {
         renderBackground();
 
         level->render();
 
-        player->renderText(0, 0);
-        //level->getMonsters().at(1)->renderText(0, 0);
-
     }
-    else if (state == MENU) {
+    else if (state == MENU ) {
         renderBackground();
         AssetManager::GetInstance()->renderText(renderer, "Steel Knight", "DungeonFont", { 0, 0, 0 }, 275, 25);
         mainMenu.render(renderer);
     }
     else if (state == SETTINGS) {
-        // Viet them class Settings sau
+        renderBackground();
+        settingsMenu.render(renderer);
+    }
+    else if (state == PAUSED) {
+        renderBackground();
+
+        level->render();
+
+        level->pauseMenu.render(renderer);
     }
 
     SDL_RenderPresent(renderer);
@@ -225,7 +231,7 @@ void Game::event() {
 
         // Xử lý sự kiện dựa trên trạng thái game
         if (state == MENU) {
-            // Phat nhac
+            // Phát nhạc
             AssetManager::GetInstance()->playMusic("menuMusic", -1);
 
             int selectedItem = mainMenu.handleEvent(e);
@@ -248,14 +254,71 @@ void Game::event() {
             }
         }
         else if (state == PLAYING) {
-            // Xử lý các sự kiện liên quan đến trạng thái PLAYING (nếu cần)
+            // Phát nhạc
             AssetManager::GetInstance()->playMusic("gameMusic", -1);
+
+            if (level->pauseButton && level->pauseButton->handleEvent(e)) {
+                state = PAUSED;
+            }
         }
         else if (state == SETTINGS) {
-            // Xử lý các sự kiện liên quan đến trạng thái SETTINGS (nếu cần)
+            // Phát nhạc hoặc âm thanh cài đặt nếu cần
+            AssetManager::GetInstance()->playMusic("menuMusic", -1);
+
+            int selectedSetting = settingsMenu.handleEvent(e);
+
+            if (selectedSetting != -1) {
+                switch (selectedSetting) {
+                case 0: // Increase Volume
+                    AssetManager::GetInstance()->increaseVolume();
+                    settingsMenu.updateLabel("Volume", std::to_string(AssetManager::GetInstance()->getVolume()));
+                    break;
+                case 1: // Decrease Volume
+                    AssetManager::GetInstance()->decreaseVolume();
+                    settingsMenu.updateLabel("Volume", std::to_string(AssetManager::GetInstance()->getVolume()));
+                    break;
+                case 2: // Mute/Unmute
+                    if (AssetManager::GetInstance()->isMuted()) {
+                        AssetManager::GetInstance()->unmuteVolume();
+                        settingsMenu.updateButtonTexture("Mute", "unmuteNormalButtonTexture", "unmuteHoveredButtonTexture");
+                    }
+                    else {
+                        AssetManager::GetInstance()->muteVolume();
+                        settingsMenu.updateButtonTexture("Mute", "muteNormalButtonTexture", "muteHoveredButtonTexture");
+                    }
+                    break;
+                case 3: // Back
+                    state = previousState; // Quay lại trạng thái trước đó
+                    break;
+                default:
+                    break;
+                }
+            }
         }
         else if (state == PAUSED) {
-            // Xử lý các sự kiện liên quan đến trạng thái PAUSED (nếu cần)
+            // Xử lý các sự kiện liên quan đến trạng thái PAUSED
+            int selectedPauseOption = level->pauseMenu.handleEvent(e);
+
+            if (selectedPauseOption != -1) {
+                switch (selectedPauseOption) {
+                case 0: // Continue
+                    state = PLAYING; // Tiếp tục game
+                    break;
+                case 1: // Settings
+                    previousState = PAUSED; // Lưu trạng thái hiện tại
+                    state = SETTINGS; // Mở cài đặt
+                    break;
+                case 2: // Replay
+                    level->resetLevel(); // Chơi lại
+                    state = PLAYING;
+                    break;
+                case 3: // Back to Menu
+                    state = MENU; // Quay lại menu chính
+                    break;
+                default:
+                    break;
+                }
+            }
         }
     }
 }

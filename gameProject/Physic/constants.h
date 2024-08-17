@@ -177,7 +177,27 @@ const int DEFAULT_FONT_SIZE = 20;
 
     const std::map<std::string, std::string> MENU_TEXTURE_PATHS = {
         {"panelTexture", "Assets//button//png@4x//Button-Back//Rect//Panel@4x.png"},
+
         {"buttonNormalTexture", "Assets//button//png@4x//Button-Back//Rect//Default@4x.png"},
         {"buttonHoveredTexture", "Assets//button//png@4x//Button-Back//Rect//Hover@4x.png"},
+
+        {"muteNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOff//Default@4x.png"},
+        {"muteHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOff//Hover@4x.png"},
+
+        {"unmuteNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOn//Default@4x.png"},
+        {"unmuteHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOn//Hover@4x.png"},
+
+        {"leftNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//ArrowLeft-Bold//Default@4x.png"},
+        {"leftHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//ArrowLeft-Bold//Hover@4x.png"},
+
+        {"rightNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//ArrowRight-Bold//Default@4x.png"},
+        {"rightHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//ArrowRight-Bold//Hover@4x.png"},
+
+        {"pauseNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//Pause//Default@4x.png"},
+        {"pauseHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//Pause//Hover@4x.png"},
+
+        {"replayNormalButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOff//Default@4x.png"},
+        {"replayHoveredButtonTexture", "Assets//button//png@4x//Buttons//Square//SoundOn//Hover@4x.png"},
+
     };
 

@@ -19,7 +19,8 @@ public:
     SDL_Window* window;
     SDL_Renderer* renderer;
     GameState state = MENU;
-
+    GameState previousState = MENU;
+    SDL_Event e;
     void init();
     void quit();
     void update();

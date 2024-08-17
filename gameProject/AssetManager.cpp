@@ -207,6 +207,47 @@ void AssetManager::stopMusic()
     Mix_HaltMusic();
 }
 
+void AssetManager::increaseVolume() {
+    currentVolumePercent += 10;
+    if (currentVolumePercent > 100) {
+        currentVolumePercent = 100;
+    }
+
+    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_VolumeMusic(newVolume);
+    Mix_Volume(-1, newVolume); 
+}
+
+void AssetManager::decreaseVolume() {
+    currentVolumePercent -= 10;
+    if (currentVolumePercent < 0) {
+        currentVolumePercent = 0;
+    }
+
+    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_VolumeMusic(newVolume);
+    Mix_Volume(-1, newVolume); 
+}
+
+int AssetManager::getVolume() const {
+    return currentVolumePercent;
+}
+
+void AssetManager::unmuteVolume() {
+    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_VolumeMusic(newVolume);
+    Mix_Volume(-1, newVolume); 
+}
+
+void AssetManager::muteVolume() {
+    Mix_VolumeMusic(0); 
+    Mix_Volume(-1, 0);  
+}
+
+bool AssetManager::isMuted() const {
+    return Mix_VolumeMusic(-1) == 0 && Mix_Volume(-1, -1) == 0; // Kiểm tra nếu âm lượng là 0 thì đang mute
+}
+
 
 void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::string fontId, SDL_Color color, int x, int y)
 {
@@ -231,7 +272,7 @@ void AssetManager::renderText(SDL_Renderer* renderer, std::string message, std::
 
     SDL_Rect destRect = { x, y, surface->w, surface->h };
     SDL_RenderCopy(renderer, texture, nullptr, &destRect);
-
+    
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
