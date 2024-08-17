@@ -120,7 +120,7 @@ public:
             int textWidth, textHeight;
             TTF_SizeText(AssetManager::GetInstance()->getFont("fontGame"), text.c_str(), &textWidth, &textHeight);
             int centeredX = x + (width - textWidth) / 2;
-            int centeredY = y + (height - textHeight) / 2;
+            int centeredY = y + textHeight;
             AssetManager::GetInstance()->renderText(renderer, text, "fontGame", { 255, 255, 255, 255 }, centeredX, centeredY);
         }
     }
@@ -229,7 +229,7 @@ public:
         int panelY = (NUM_SCREEN_Y * SIZE - panelHeight) / 2;
 
         // Thêm Panel vào SettingMenu
-        addPanel(std::make_unique<Panel>("SettingPanel", "", "panelTexture", panelX, panelY, panelWidth, panelHeight));
+        addPanel(std::make_unique<Panel>("SettingPanel", "Setting", "panelTexture", panelX, panelY, panelWidth, panelHeight));
 
         // Tính toán vị trí của các thành phần
         int labelWidth = SIZE * 3;

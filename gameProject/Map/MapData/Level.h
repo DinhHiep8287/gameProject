@@ -15,7 +15,7 @@ public:
         int panelHeight = SIZE * 12;
         int panelX = (NUM_SCREEN_X * SIZE - panelWidth) / 2;
         int panelY = (NUM_SCREEN_Y * SIZE - panelHeight) / 2;
-        pauseMenu.addPanel(std::make_unique<Panel>("PausePanel", "", "panelTexture", panelX, panelY, panelWidth, panelHeight));
+        pauseMenu.addPanel(std::make_unique<Panel>("PausePanel", "Pause", "panelTexture", panelX, panelY, panelWidth, panelHeight));
 
         // Buttons
         int buttonWidth = SIZE * 7;

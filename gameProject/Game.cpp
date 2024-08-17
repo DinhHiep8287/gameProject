@@ -243,6 +243,7 @@ void Game::event() {
                     state = PLAYING; // Start Game
                     break;
                 case 1: // Button "Settings"
+                    previousState = MENU;
                     state = SETTINGS; // Open Settings
                     break;
                 case 2: // Button "Quit"
