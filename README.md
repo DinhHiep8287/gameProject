@@ -1,12 +1,14 @@
+Đinh Tuấn Hiệp 22028287
+
 * **Tên Game : STEEL KNIGHT**
 
 * **Chủ đề** : RPG
 
-* **Video Demo :**
+* **Video Demo :** https://www.youtube.com/watch?v=fjfiUtDZAQo
 
 * **Tên Game : STEEL KNIGHT**
 
-* **Giới thiệu :** : Chiến đấu với Quái vật để giành được nhiều điểm nhất có thể 
+* **Giới thiệu :** : Game sử dụng thư viện đồ họa, âm thanh và chữ SDL 2.0. Nhập vai thành kỵ sĩ, chiến đấu với quái vật để giành được nhiều điểm nhất có thể.
                         
                         Di Chuyển : A - W - S - D
                         Tấn Công : J
@@ -27,6 +29,17 @@
    **( Background động : khi nhân vật chuyển động background sẽ di chuyển theo, các layer sẽ có mức di chuyển khác nhau phụ thuộc vào độ gần xa )**
    [![background.png](https://i.postimg.cc/0rR2hLt2/background.png)](https://postimg.cc/H8zgyPDf)
 
+  - GUI: https://prinbles.itch.io/legend-buttons
+  - 
+  [![Screenshot-2024-08-18-194208.png](https://i.postimg.cc/vTBMT5FJ/Screenshot-2024-08-18-194208.png)](https://postimg.cc/r0v7Y0pj)
+* **Nguồn âm thanh** :
+  - Music: https://tallbeard.itch.io/music-loop-bundle
+  - Sound Effect: https://leohpaz.itch.io/minifantasy-dungeon-sfx-pack
+
+* **Font** : 
+    - OpenSans: https://fonts.google.com/specimen/Open+Sans
+    - Arcade: https://www.1001fonts.com/arcadeclassic-font.html
+
 * **Map được custom bằng Tiled** : https://www.mapeditor.org/
                  
     [![tiled.png](https://i.postimg.cc/Vs3qYvp5/tiled.png)](https://postimg.cc/t7NZkqXH)             
@@ -36,9 +49,7 @@
     + ~~Thêm hoạt ảnh khi nhận sát thương~~
     + ~~Thêm hoạt ảnh khi nhân vật chết~~
     + ~~Cho quái vật di chuyển~~
-    + Giết quái rơi ra vật phẩm: Hồi máu, tăng chỉ số, ...
     + ~~Thêm Menu~~
-    + Thêm Thanh máu + Điểm
-    + Thêm chỉ số
+    + ~~Thêm Thanh máu + Điểm~~
     + ~~Thêm âm thanh~~
-    + Thêm gameOver + Replay
+    + ~~Thêm gameOver + Replay~~
