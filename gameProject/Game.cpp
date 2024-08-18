@@ -42,7 +42,7 @@ void initMenuItems() {
     int panelY = (NUM_SCREEN_Y * SIZE - panelHeight) / 2;
 
     // Thêm Panel vào Menu
-    mainMenu.addPanel(std::make_unique<Panel>("Panel", "", "panelTexture", panelX, panelY, panelWidth, panelHeight));
+    mainMenu.addPanel(std::make_unique<Panel>("Panel", "Menu", "panelTexture", panelX, panelY, panelWidth, panelHeight));
 
     // Tính toán vị trí của các nút
     int buttonWidth = SIZE * 6; // Ví dụ: mỗi nút có chiều rộng 6 ô
