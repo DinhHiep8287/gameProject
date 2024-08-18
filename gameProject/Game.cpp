@@ -19,10 +19,8 @@ Level* level = new Level();
 std::vector<Layer*> layers(NUM_LAYERS);
 
 // Object
-Body testBody;
 Knight* player;
 std::vector<Monster*> monsters;
-
 void initSound() {
     std::cout << "--Khoi tao Sound: " << std::endl;
     for (const auto& pair : SOUND_PATHS) {
@@ -123,8 +121,12 @@ void initMapTexture() {
     }
 }
 
+void initMatrix() {
+    Level::loadMatrix(MAP_DATA_PATHS.at("tile_layer"));
+}
+
 void initLevelData() {
-    std::cout << "--Khoi tao du lieu ma tran map: " << std::endl;
+    std::cout << "--Khoi tao du lieu Level: " << std::endl;
     layers[TILE_LAYER] = new Layer();
     layers[OBJECT_LAYER1] = new Layer();
     layers[OBJECT_LAYER2] = new Layer();
@@ -135,15 +137,11 @@ void initLevelData() {
 
     level->loadLayers(layers);
 
-    Level::loadMatrix(MAP_DATA_PATHS.at("tile_layer"));
-
     // Thêm Knight vào Level
     level->addKnight(player);
 
     // Thêm Monster vào Level
-    for (auto& monster : monsters) {
-        level->addMonster(monster);
-    }
+    level->addMonster(monsters);
 }
 
 void renderBackground() {
@@ -152,6 +150,41 @@ void renderBackground() {
     AssetManager::GetInstance()->renderBackground("background_3", 0, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.7);
     AssetManager::GetInstance()->renderBackground("background_4", 0, 50, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.8);
     AssetManager::GetInstance()->renderBackground("background_5", 200, 0, backgroundWidth, backgroundHeight, SDL_FLIP_NONE, 0.9);
+}
+
+void resetLevel() {
+    // Dọn dẹp Knight
+    if (player) {
+        player->clean();
+        delete player;
+        player = nullptr;
+    }
+
+    // Dọn dẹp Monsters
+    for (auto monster : monsters) {
+        if (monster) {
+            monster->clean();
+            delete monster;
+        }
+    }
+    monsters.clear();
+
+    // Dọn dẹp các Layer
+    level->clearLayers();
+
+    std::cout << "Level đã được dọn dẹp." << std::endl;
+
+    // Tạo lại Knight và Monsters sau khi dọn dẹp
+    initKnight();
+    initMonsters();
+
+    // Tạo lại dữ liệu level
+    initLevelData();
+
+    // Đặt lại camera
+    Camera::getInstance()->setPoint(player->getBody()->getPosition());
+
+    std::cout << "Level đã được reset." << std::endl;
 }
 
 void Game::init()
@@ -173,6 +206,7 @@ void Game::init()
     initMonsterTexture(SKELETON_TEXTURE_PATHS, "Skeleton");
     initMenuTexture();
     initMapTexture();
+    initMatrix();
     initLevelData();
     initMenuItems();
 
@@ -319,7 +353,7 @@ void Game::event() {
                     state = SETTINGS; // Mở cài đặt
                     break;
                 case 2: // Replay
-                    level->resetLevel(); // Chơi lại
+                    resetLevel(); // Chơi lại
                     state = PLAYING;
                     break;
                 case 3: // Back to Menu

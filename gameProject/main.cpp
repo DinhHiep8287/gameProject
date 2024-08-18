@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
         frameRateController.endFrame();
         
-        //frameRateController.printFPS();
+        frameRateController.printFPS();
     }
     // THOÁT //
     Game::GetInstance()->cleanSDL();

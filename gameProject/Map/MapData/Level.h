@@ -39,8 +39,7 @@ public:
     void loadLayers(const std::vector<Layer*>& layers);
     void loadLayers(std::initializer_list<Layer*> layers);
     void drawLevel() const;
-    void clearLayers();
-    void resetLevel(); 
+    void clearLayers(); 
     static void loadMatrix(const std::string& path);
     static bool isCollidingMap(SDL_Rect a, int level);
     static std::vector<std::vector<std::vector<int>>> getMatrix();
@@ -48,7 +47,7 @@ public:
     // Quản lý Knight và Monster
     
     void addKnight(Knight* knight);
-    void addMonster(Monster* monster);
+    void addMonster(std::vector<Monster*> monsters);
     std::vector<Monster*> getMonsters() { return _monsters; }
     Knight* getKnight() { return _knight; }
     int getLevelIndex() { return levelIndex; }

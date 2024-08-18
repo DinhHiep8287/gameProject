@@ -217,6 +217,12 @@ bool Knight::render()
 
 bool Knight::clean()
 {
-    // Placeholder implementation
-    return false;
+    // Giải phóng tài nguyên hoặc xóa các đối tượng liên quan đến Knight nếu cần
+    // Ví dụ: Xóa textures, sounds, hoặc bất kỳ thứ gì Knight đang sử dụng.
+    // Đặt lại các biến của Knight về trạng thái ban đầu.
+    if (getBody()) {
+        delete getBody();
+        setBody(nullptr);
+    }
+    return true;
 }

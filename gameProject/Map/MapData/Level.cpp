@@ -93,12 +93,8 @@ void Level::addKnight(Knight* knight) {
     _knight = knight;
 }
 
-void Level::addMonster(Monster* monster) {
-    _monsters.push_back(monster);
-}
-
-void Level::resetLevel()
-{
+void Level::addMonster(std::vector<Monster*> monsters) {
+    _monsters = monsters;
 }
 
 void Level::update(float dt) {

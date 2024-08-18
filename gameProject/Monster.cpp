@@ -300,6 +300,12 @@ bool Monster::render() {
 }
 
 bool Monster::clean() {
-    // Clean up logic if needed
+    // Giải phóng tài nguyên hoặc xóa các đối tượng liên quan đến Monster nếu cần
+    // Ví dụ: Xóa textures, sounds, hoặc bất kỳ thứ gì Monster đang sử dụng.
+    // Đặt lại các biến của Monster về trạng thái ban đầu.
+    if (getBody()) {
+        delete getBody();
+        setBody(nullptr);
+    }
     return true;
 }
