@@ -108,7 +108,16 @@ const std::map<std::string, std::string> MUSIC_PATHS = {
 };
 
 const std::map<std::string, std::string> SOUND_PATHS = {
-    {"button", "Assets//button//MI_SFX 01.wav"}
+    {"button", "Assets//button//MI_SFX 01.wav"},
+    {"knight_attack", "Assets//sound//sfx//knight_attack.wav"},
+    {"knight_death", "Assets//sound//sfx//knight_death.wav"},
+    {"knight_jump", "Assets//sound//sfx//knight_jump.wav"},
+    {"knight_jump_land", "Assets//sound//sfx//knight_jump_land.wav"},
+    {"knight_take_damage", "Assets//sound//sfx//knight_take_damage.wav"},
+    {"knight_walk", "Assets//sound//sfx//knight_walk.wav"},
+    {"monster_attack", "Assets//sound//sfx//monster_attack.wav"},
+    {"monster_take_damage", "Assets//sound//sfx//monster_take_damage.wav"},
+    {"monster_death", "Assets//sound//sfx//monster_death.wav"},
 };
 
 const int DEFAULT_FONT_SIZE = 20;

@@ -38,6 +38,7 @@ bool Engine::initMixer() {
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
         return false;
     }
+    Mix_AllocateChannels(16);
 }
 
 void Engine::quitSDL(SDL_Window* window, SDL_Renderer* renderer)

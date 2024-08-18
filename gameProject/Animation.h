@@ -18,7 +18,7 @@ public:
     void SetAnimation(std::string _id, SDL_RendererFlip _flip, int _row, int _AnimationSpeed, int _frameCount, int _frame)
     {
         if (id != _id) {
-            id = _id;   
+            id = _id;       
             flip = _flip;
             row = _row;
             AnimationSpeed = _AnimationSpeed;

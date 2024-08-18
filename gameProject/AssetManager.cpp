@@ -207,36 +207,72 @@ void AssetManager::stopMusic()
     Mix_HaltMusic();
 }
 
-void AssetManager::increaseVolume() {
-    currentVolumePercent += 10;
-    if (currentVolumePercent > 100) {
-        currentVolumePercent = 100;
+void AssetManager::playSound(std::string id, int channel)
+{
+    Mix_Chunk* sound = _soundMap[id];
+    if (!sound) {
+        std::cerr << "Sound not found: " << id << std::endl;
+        return;
     }
 
-    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
-    Mix_VolumeMusic(newVolume);
-    Mix_Volume(-1, newVolume); 
+    if (Mix_PlayChannel(channel, sound, 0) == -1) {
+        std::cerr << "Unable to play sound: " << Mix_GetError() << std::endl;
+    }
 }
 
-void AssetManager::decreaseVolume() {
-    currentVolumePercent -= 10;
-    if (currentVolumePercent < 0) {
-        currentVolumePercent = 0;
+void AssetManager::increaseMusicVolume() {
+    currentMusicVolumePercent += 10;
+    if (currentMusicVolumePercent > 100) {
+        currentMusicVolumePercent = 100;
     }
 
-    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
+    int newVolume = (currentMusicVolumePercent * MIX_MAX_VOLUME) / 100;
     Mix_VolumeMusic(newVolume);
-    Mix_Volume(-1, newVolume); 
 }
 
-int AssetManager::getVolume() const {
-    return currentVolumePercent;
+void AssetManager::decreaseMusicVolume() {
+    currentMusicVolumePercent -= 10;
+    if (currentMusicVolumePercent < 0) {
+        currentMusicVolumePercent = 0;
+    }
+
+    int newVolume = (currentMusicVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_VolumeMusic(newVolume);
+}
+
+void AssetManager::increaseSFXVolume() {
+    currentSFXVolumePercent += 10;
+    if (currentSFXVolumePercent > 100) {
+        currentSFXVolumePercent = 100;
+    }
+
+    int newVolume = (currentSFXVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_Volume(-1, newVolume);
+}
+
+void AssetManager::decreaseSFXVolume() {
+    currentSFXVolumePercent -= 10;
+    if (currentSFXVolumePercent < 0) {
+        currentSFXVolumePercent = 0;
+    }
+
+    int newVolume = (currentSFXVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_Volume(-1, newVolume);
+}
+
+int AssetManager::getMusicVolume() const {
+    return currentMusicVolumePercent;
+}
+
+int AssetManager::getSFXVolume() const {
+    return currentSFXVolumePercent;
 }
 
 void AssetManager::unmuteVolume() {
-    int newVolume = (currentVolumePercent * MIX_MAX_VOLUME) / 100;
-    Mix_VolumeMusic(newVolume);
-    Mix_Volume(-1, newVolume); 
+    int newMusicVolume = (currentMusicVolumePercent * MIX_MAX_VOLUME) / 100;
+    int newSFXVolume = (currentSFXVolumePercent * MIX_MAX_VOLUME) / 100;
+    Mix_VolumeMusic(newMusicVolume);
+    Mix_Volume(-1, newSFXVolume); 
 }
 
 void AssetManager::muteVolume() {

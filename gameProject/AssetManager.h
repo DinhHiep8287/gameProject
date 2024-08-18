@@ -19,7 +19,8 @@ public:
     std::map<std::string, Mix_Chunk*> _soundMap;
     std::map<std::string, Mix_Music*> _musicMap;
     std::string idMusicPlaying = "";
-    int currentVolumePercent = 100;
+    int currentMusicVolumePercent = 100;
+    int currentSFXVolumePercent = 100;
 
     bool loadTexture(std::string id, std::string fileName);
     bool loadFont(std::string id, std::string fileName, int fontSize);
@@ -46,19 +47,27 @@ public:
 
     void playSound(std::string id);
 
+    void playSound(std::string id, int channel);
+
     void playMusic(std::string id, int loop);
 
     void stopMusic();
 
-    void increaseVolume();
+    void increaseMusicVolume();
 
-    void decreaseVolume();
+    void decreaseMusicVolume();
+
+    void increaseSFXVolume();
+
+    void decreaseSFXVolume();
 
     void muteVolume();
 
     void unmuteVolume();
 
-    int getVolume() const;
+    int getMusicVolume() const;
+
+    int getSFXVolume() const;
 
     bool isMuted() const;
 

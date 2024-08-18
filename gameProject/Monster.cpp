@@ -144,6 +144,7 @@ void Monster::handleState()
 
         if (maxAttackFrame != 0 && attackFrame == int(maxAttackFrame / 4 * 3)) {
             isDamageFrame = true;
+            AssetManager::GetInstance()->playSound("monster_attack", 7);
         }
         return;
     }
@@ -212,10 +213,9 @@ bool Monster::takeDamage(float damage) {
     }
 
     this->health -= damage;
-
+    AssetManager::GetInstance()->playSound("monster_take_damage", 9);
     if (this->health <= 0) {
         this->health = 0;
-
         // Đầu tiên, cho nhân vật vào trạng thái TAKING_DAMAGE nếu chưa ở trạng thái này
         if (state != TAKING_DAMAGE) {
             state = TAKING_DAMAGE;
@@ -224,7 +224,7 @@ bool Monster::takeDamage(float damage) {
             // Nếu nhân vật đã ở trạng thái TAKING_DAMAGE, chuyển sang trạng thái DYING
             state = DYING;
         }
-
+        AssetManager::GetInstance()->playSound("monster_death", 8);
         return true;
     }
 

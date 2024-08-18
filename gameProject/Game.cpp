@@ -270,15 +270,23 @@ void Game::event() {
 
             if (selectedSetting != -1) {
                 switch (selectedSetting) {
-                case 0: // Increase Volume
-                    AssetManager::GetInstance()->increaseVolume();
-                    settingsMenu.updateLabel("Volume", std::to_string(AssetManager::GetInstance()->getVolume()));
+                case 0: // Increase Music Volume
+                    AssetManager::GetInstance()->increaseMusicVolume();
+                    settingsMenu.updateLabel("MusicVolume", std::to_string(AssetManager::GetInstance()->getMusicVolume()));
                     break;
-                case 1: // Decrease Volume
-                    AssetManager::GetInstance()->decreaseVolume();
-                    settingsMenu.updateLabel("Volume", std::to_string(AssetManager::GetInstance()->getVolume()));
+                case 1: // Decrease Music Volume
+                    AssetManager::GetInstance()->decreaseMusicVolume();
+                    settingsMenu.updateLabel("MusicVolume", std::to_string(AssetManager::GetInstance()->getMusicVolume()));
                     break;
-                case 2: // Mute/Unmute
+                case 2: // Increase SFX Volume
+                    AssetManager::GetInstance()->increaseSFXVolume();
+                    settingsMenu.updateLabel("SFXVolume", std::to_string(AssetManager::GetInstance()->getSFXVolume()));
+                    break;
+                case 3: // Decrease SFX Volume
+                    AssetManager::GetInstance()->decreaseSFXVolume();
+                    settingsMenu.updateLabel("SFXVolume", std::to_string(AssetManager::GetInstance()->getSFXVolume()));
+                    break;
+                case 4: // Mute/Unmute
                     if (AssetManager::GetInstance()->isMuted()) {
                         AssetManager::GetInstance()->unmuteVolume();
                         settingsMenu.updateButtonTexture("Mute", "unmuteNormalButtonTexture", "unmuteHoveredButtonTexture");
@@ -288,7 +296,7 @@ void Game::event() {
                         settingsMenu.updateButtonTexture("Mute", "muteNormalButtonTexture", "muteHoveredButtonTexture");
                     }
                     break;
-                case 3: // Back
+                case 5: // Back
                     state = previousState; // Quay lại trạng thái trước đó
                     break;
                 default:
@@ -296,6 +304,7 @@ void Game::event() {
                 }
             }
         }
+
         else if (state == PAUSED) {
             // Xử lý các sự kiện liên quan đến trạng thái PAUSED
             int selectedPauseOption = level->pauseMenu.handleEvent(e);

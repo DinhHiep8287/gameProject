@@ -224,7 +224,7 @@ class Setting : public Menu {
 public:
     Setting(int x, int y, int w, int h) {
         int panelWidth = SIZE * 15;
-        int panelHeight = SIZE * 10; // Tăng chiều cao panel để phù hợp với thiết kế mới
+        int panelHeight = SIZE * 12; 
         int panelX = (NUM_SCREEN_X * SIZE - panelWidth) / 2;
         int panelY = (NUM_SCREEN_Y * SIZE - panelHeight) / 2;
 
@@ -234,10 +234,10 @@ public:
         // Tính toán vị trí của các thành phần
         int labelWidth = SIZE * 3;
         int labelHeight = SIZE * 1.5;
-        int buttonSize = SIZE * 1.5; // Nút tăng giảm âm lượng hình vuông
+        int buttonSize = SIZE * 1.5;
         int volumeLabelWidth = SIZE * 3;
 
-        // Vị trí hàng đầu tiên
+        // Vị trí hàng đầu tiên (điều chỉnh âm lượng Music)
         int firstRowY = panelY + SIZE * 2;
         int labelX = panelX + SIZE * 1;
         int decreaseButtonX = labelX + labelWidth + SIZE * 0.5;
@@ -246,26 +246,38 @@ public:
 
         // Thêm các thành phần hàng đầu tiên vào SettingMenu
         addLabel(std::make_unique<Label>("MusicLabel", "Music:", "fontGame", SDL_Color{ 255, 255, 255, 255 }, labelX, firstRowY, labelWidth, labelHeight));
-        addButton(std::make_unique<Button>("IncreaseVolume", "", "rightNormalButtonTexture", "rightHoveredButtonTexture", increaseButtonX, firstRowY, buttonSize, buttonSize));
-        addButton(std::make_unique<Button>("DecreaseVolume", "", "leftNormalButtonTexture", "leftHoveredButtonTexture", decreaseButtonX, firstRowY, buttonSize, buttonSize));
-        addLabel(std::make_unique<Label>("Volume", std::to_string(AssetManager::GetInstance()->getVolume()), "fontGame", SDL_Color{ 255, 255, 255, 255 }, volumeLabelX, firstRowY, volumeLabelWidth, labelHeight));
+        addButton(std::make_unique<Button>("IncreaseMusicVolume", "", "rightNormalButtonTexture", "rightHoveredButtonTexture", increaseButtonX, firstRowY, buttonSize, buttonSize));
+        addButton(std::make_unique<Button>("DecreaseMusicVolume", "", "leftNormalButtonTexture", "leftHoveredButtonTexture", decreaseButtonX, firstRowY, buttonSize, buttonSize));
+        addLabel(std::make_unique<Label>("MusicVolume", std::to_string(AssetManager::GetInstance()->getMusicVolume()), "fontGame", SDL_Color{ 255, 255, 255, 255 }, volumeLabelX, firstRowY, volumeLabelWidth, labelHeight));
 
-        // Vị trí hàng thứ hai (Label "Mute:" và Button "Mute/Unmute")
+        // Vị trí hàng thứ hai (điều chỉnh âm lượng SFX)
         int secondRowY = firstRowY + labelHeight + SIZE * 1.5;
+        decreaseButtonX = labelX + labelWidth + SIZE * 0.5;
+        increaseButtonX = decreaseButtonX + buttonSize + SIZE * 0.5;
+        volumeLabelX = increaseButtonX + buttonSize + SIZE * 0.5;
+
+        addLabel(std::make_unique<Label>("SFXLabel", "SFX:", "fontGame", SDL_Color{ 255, 255, 255, 255 }, labelX, secondRowY, labelWidth, labelHeight));
+        addButton(std::make_unique<Button>("IncreaseSFXVolume", "", "rightNormalButtonTexture", "rightHoveredButtonTexture", increaseButtonX, secondRowY, buttonSize, buttonSize));
+        addButton(std::make_unique<Button>("DecreaseSFXVolume", "", "leftNormalButtonTexture", "leftHoveredButtonTexture", decreaseButtonX, secondRowY, buttonSize, buttonSize));
+        addLabel(std::make_unique<Label>("SFXVolume", std::to_string(AssetManager::GetInstance()->getSFXVolume()), "fontGame", SDL_Color{ 255, 255, 255, 255 }, volumeLabelX, secondRowY, volumeLabelWidth, labelHeight));
+
+        // Vị trí hàng thứ ba (Label "Mute:" và Button "Mute/Unmute")
+        int thirdRowY = secondRowY + labelHeight + SIZE * 1.5;
         int muteLabelX = labelX;
         int muteButtonX = muteLabelX + labelWidth + SIZE * 0.5;
 
-        // Thêm Label "Mute:" và Button "Mute/Unmute" vào hàng thứ hai
-        addLabel(std::make_unique<Label>("MuteLabel", "Mute:", "fontGame", SDL_Color{ 255, 255, 255, 255 }, muteLabelX, secondRowY, labelWidth, labelHeight));
-        addButton(std::make_unique<Button>("Mute", "", "unmuteNormalButtonTexture", "unmuteHoveredButtonTexture", muteButtonX, secondRowY, buttonSize, buttonSize));
+        // Thêm Label "Mute:" và Button "Mute/Unmute" vào hàng thứ ba
+        addLabel(std::make_unique<Label>("MuteLabel", "Mute:", "fontGame", SDL_Color{ 255, 255, 255, 255 }, muteLabelX, thirdRowY, labelWidth, labelHeight));
+        addButton(std::make_unique<Button>("Mute", "", "unmuteNormalButtonTexture", "unmuteHoveredButtonTexture", muteButtonX, thirdRowY, buttonSize, buttonSize));
 
-        // Vị trí hàng thứ ba (nút "Back")
-        int thirdRowY = secondRowY + labelHeight + SIZE * 1.5;
+        // Vị trí hàng thứ tư (nút "Back")
+        int fourthRowY = thirdRowY + labelHeight + SIZE * 1.5;
         int buttonWidth = SIZE * 6;
         int buttonHeight = SIZE * 1.5;
         int backButtonX = panelX + (panelWidth - buttonWidth) / 2;
 
-        // Thêm nút "Back" vào hàng thứ ba
-        addButton(std::make_unique<Button>("Back", "Back", "buttonNormalTexture", "buttonHoveredTexture", backButtonX, thirdRowY, buttonWidth, buttonHeight));
+        // Thêm nút "Back" vào hàng thứ tư
+        addButton(std::make_unique<Button>("Back", "Back", "buttonNormalTexture", "buttonHoveredTexture", backButtonX, fourthRowY, buttonWidth, buttonHeight));
     }
 };
+

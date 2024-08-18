@@ -79,6 +79,7 @@ void Knight::handleState()
 
         if (attackFrame == int(maxAttackFrame / 2) ) {
             isDamageFrame = true;
+            AssetManager::GetInstance()->playSound("knight_attack", 1);
         }
         return;
     }
@@ -90,6 +91,12 @@ void Knight::handleState()
             state = IDLE;
         }
         return;
+    }
+
+    if (state == RUNNING && this->getBody()->isGrounded()) {
+        if (!Mix_Playing(2)) {
+            AssetManager::GetInstance()->playSound("knight_walk", 2);
+        }
     }
     
     // Nếu nhân vật ngừng tấn công, reset attackFrame về 0
@@ -104,11 +111,19 @@ void Knight::handleState()
             state = FALLING;
         }
     }
-    else if (abs(this->getBody()->getVelocity().getX()) > 0.8f) {
-        state = RUNNING;
-    }
     else {
-        state = IDLE;
+        // Nếu vừa tiếp đất sau khi nhảy hoặc rơi
+        if (state == FALLING) {
+            // Phát âm thanh tiếp đất
+            AssetManager::GetInstance()->playSound("knight_jump_land", 3);
+        }
+
+        if (abs(this->getBody()->getVelocity().getX()) > 0.8f) {
+            state = RUNNING;
+        }
+        else {
+            state = IDLE;
+        }
     }
     
     switch (state) {
@@ -149,9 +164,12 @@ bool Knight::takeDamage(float damage) {
 
     this->health -= damage;
     this->getBody()->unsetVelocity();
+
+    AssetManager::GetInstance()->playSound("knight_take_damage", 4);
     if (this->health <= 0) {
         this->health = 0; 
         state = DYING; 
+        AssetManager::GetInstance()->playSound("knight_death", 5);
         return true;
     }
 
@@ -167,6 +185,7 @@ void Knight::jump()
     if (this->getBody()->isGrounded()) {
         this->getBody()->getVelocity().setY(-JUMP_FORCE);
         this->getBody()->setIsGrounded(false);
+        AssetManager::GetInstance()->playSound("knight_jump", 6);
     }
 }
 
