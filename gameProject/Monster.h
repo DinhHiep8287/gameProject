@@ -25,12 +25,14 @@ class Monster : public Character
 {
 private:
     MonsterType type;
+    HealthBar* _healthBar;
 
 public:
     Monster(float x, float y, float mass, MonsterType type)
         : Character(x, y, GetWidthBasedOnType(type), GetHeightBasedOnType(type), mass, DEFAULT_MONSTER_HEALTH, defaultDirection, DEFAULT_MONSTER_ATTACK_SPEED), type(type)
     {
         maxAttackFrame = attackSpeed / 100 * 43;
+        _healthBar = new HealthBar(this->getBody()->getRectShape().x, this->getBody()->getRectShape().y - 10, GetWidthBasedOnType(type), 5);
     }
 
     static float GetWidthBasedOnType(MonsterType type) {

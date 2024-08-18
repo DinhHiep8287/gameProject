@@ -3,7 +3,7 @@
 #include "Physic/constants.h"
 #include "Input.h"
 
-const float DEFAULT_KNIGHT_MAX_HEALTH = 10.0f;
+const float DEFAULT_KNIGHT_MAX_HEALTH = 100.0f;
 const float KNIGHT_ATTACK_RANGE = 100.0f;
 const float KNIGHT_ATTACK_DAMAGE = 30.0f;
 const float DEFAULT_KNIGHT_ATTACK_SPEED = 200;

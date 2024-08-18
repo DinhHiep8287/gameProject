@@ -52,6 +52,7 @@ void Knight::handleState()
         this->getBody()->unsetVelocityX();
         this->setAnimation("KnightDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 80, 1, 0);
         this->getAnimation()->UpdateAnimation();
+        Game::GetInstance()->state = GAMEOVER;
         return;
     }
 

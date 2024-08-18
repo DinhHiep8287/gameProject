@@ -54,6 +54,7 @@ const dir defaultDirection = RIGHT;
         {"object_1", "Assets//Ob.png"},
         {"object_2", "Assets//Ob1.png"},
         {"tile_set", "Assets//Tileset.png"},
+        {"heart", "Assets//heart.png"},
     };
 
     const std::map<std::string, std::string> MAP_DATA_PATHS = {
@@ -67,6 +68,8 @@ const dir defaultDirection = RIGHT;
     const int NUM_TILE_SET_X = 10; const int NUM_TILE_SET_Y = 6; const int FIRST_ID_TILE_SET = 1;
     const int NUM_OBJECT_1_X = 12; const int NUM_OBJECT_1_Y = 11; const int FIRST_ID_OBJECT_1 = 61;
     const int NUM_OBJECT_2_X = 40; const int NUM_OBJECT_2_Y = 30; const int FIRST_ID_OBJECT_2 = 193;
+
+    const std::string HIGHSCORE_PATH = "Map//GameData//highscore.txt";
 
     // Monster Info
 const std::vector<std::tuple<int, int, int, MonsterType>> monstersInfo = {

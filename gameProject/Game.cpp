@@ -172,7 +172,9 @@ void resetLevel() {
     // Dọn dẹp các Layer
     level->clearLayers();
 
-    std::cout << "Level đã được dọn dẹp." << std::endl;
+    level->score = 0;
+
+    std::cout << "Level da duoc don dep." << std::endl;
 
     // Tạo lại Knight và Monsters sau khi dọn dẹp
     initKnight();
@@ -184,7 +186,7 @@ void resetLevel() {
     // Đặt lại camera
     Camera::getInstance()->setPoint(player->getBody()->getPosition());
 
-    std::cout << "Level đã được reset." << std::endl;
+    std::cout << "Level da duoc reset." << std::endl;
 }
 
 void Game::init()
@@ -252,6 +254,16 @@ void Game::render()
         level->render();
 
         level->pauseMenu.render(renderer);
+    }
+    else if (state == GAMEOVER) {
+        renderBackground();
+
+        level->render();
+
+        level->gameOverMenu.updateLabel("Score", std::to_string(level->score));
+        level->gameOverMenu.updateLabel("HighScore", std::to_string(level->highScore));
+
+        level->gameOverMenu.render(renderer);
     }
 
     SDL_RenderPresent(renderer);
@@ -364,6 +376,23 @@ void Game::event() {
                 }
             }
         }
+        else if (state == GAMEOVER) {
+            int selectedPauseOption = level->gameOverMenu.handleEvent(e);
+
+            if (selectedPauseOption != -1) {
+                switch (selectedPauseOption) {
+                case 0: // Replay
+                    resetLevel(); // Chơi lại
+                    state = PLAYING;
+                    break;
+                case 1: // Back to Menu
+                    state = MENU; // Quay lại menu chính
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -376,6 +405,7 @@ void Game::cleanSDL()
 
 void Game::quit()
 {
+    level->saveHighScore();
     state = EXIT;
 }
 

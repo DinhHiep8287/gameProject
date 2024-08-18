@@ -34,7 +34,8 @@ public:
         const Vector2D oldPosition, const Vector2D newPosition) {
         
         // Khi nhân vật rơi xuống vực
-        if (this->getBody()->getRectShape().y + this->getBody()->getRectShape().h > MAP_HEIGHT) {
+        if (this->getBody()->getRectShape().y + this->getBody()->getRectShape().h > MAP_HEIGHT + 500) {
+            health = 0;
             state = DEAD;
             return;
         }
@@ -176,7 +177,7 @@ public:
 
 
     void renderText(int startX, int startY) const {
-        Object::renderText(0, 0);
+        Object::renderText(startX, startY);
         SDL_Color color = { 255, 255, 255, 255 };
         std::string fontId = "default";
 

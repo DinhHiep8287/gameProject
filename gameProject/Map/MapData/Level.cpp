@@ -100,6 +100,7 @@ void Level::addMonster(std::vector<Monster*> monsters) {
 void Level::update(float dt) {
     for (auto monster : _monsters) {
         if (monster) {
+            _healthBar->update(_knight->getHealth(), DEFAULT_KNIGHT_MAX_HEALTH);
             monster->update(dt);
             if (_knight && monster->findKnightInRange(_knight->getBody()->getRectShape()) && monster->getIsDamageFrame()) {
                 std::cout << "gay sat thuong\n";
@@ -116,11 +117,16 @@ void Level::update(float dt) {
                     std::cout << "gay sat thuong\n";
                     monster->takeDamage(KNIGHT_ATTACK_DAMAGE);
                     std::cout << monster->getHealth() << std::endl;
+
+                    addScore(10);
+                    if (monster->getHealth() <= 0) {
+                        // Cộng điểm khi tiêu diệt quái vật
+                        addScore(50);
+                    }
                 }
             }
         }
     }
-
 }
 
 
@@ -130,18 +136,21 @@ void Level::render() {
     for (auto monster : _monsters) {
         if (monster) {
             monster->render();
-            monster->renderRectShape();
         }
     }
 
     if (_knight) {
         _knight->render();
-        _knight->renderRectShape();
     }
 
     if (pauseButton) {
         pauseButton->render(Game::GetInstance()->renderer);
     }
+
+    _healthBar->render(Game::GetInstance()->renderer);
+    AssetManager::GetInstance()->renderTextureRect(Game::GetInstance()->renderer, "heart", _healthBar->_x - 30, _healthBar->_y, 20, 20);
+
+    AssetManager::GetInstance()->renderText(Game::GetInstance()->renderer, "SCORE: " + std::to_string(score), "fontGame", {255,255,255}, 10, 50);
 }
 
 Level::~Level() {

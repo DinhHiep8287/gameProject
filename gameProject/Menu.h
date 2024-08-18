@@ -281,3 +281,38 @@ public:
     }
 };
 
+class HealthBar {
+public:
+    HealthBar(int x, int y, int width, int height)
+        : _x(x), _y(y), _width(width), _height(height), _currentWidth(width) {
+        _backgroundColor = { 255, 0, 0, 255 }; // Đỏ
+        _foregroundColor = { 0, 255, 0, 255 }; // Xanh lá
+    }
+    void update(int currentHealth, int maxHealth) {
+        float healthPercentage = static_cast<float>(currentHealth) / maxHealth;
+        _currentWidth = static_cast<int>(_width * healthPercentage);
+    }
+    void render(SDL_Renderer* renderer) {
+        // Vẽ thanh nền
+        SDL_Rect backgroundRect = { _x, _y, _width, _height };
+        SDL_SetRenderDrawColor(renderer, _backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _backgroundColor.a);
+        SDL_RenderFillRect(renderer, &backgroundRect);
+
+        // Vẽ thanh máu
+        SDL_Rect foregroundRect = { _x, _y, _currentWidth, _height };
+        SDL_SetRenderDrawColor(renderer, _foregroundColor.r, _foregroundColor.g, _foregroundColor.b, _foregroundColor.a);
+        SDL_RenderFillRect(renderer, &foregroundRect);
+    }
+
+    void setPosition(int newX, int newY) {
+        _x = newX;
+        _y = newY;
+    }
+
+public:
+    int _x, _y;
+    int _width, _height;
+    int _currentWidth;
+    SDL_Color _backgroundColor;
+    SDL_Color _foregroundColor;
+};

@@ -187,7 +187,6 @@ void AssetManager::playMusic(std::string id, int loop)
 {
     if (idMusicPlaying != id) 
     {
-        std::cout << "music play";
         stopMusic();
         Mix_Music* music = _musicMap[id];
         if (!music) {

@@ -40,7 +40,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("FlyingEyeTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
-            this->setAnimation("FlyingEyeDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+            this->setAnimation("FlyingEyeDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 200, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("FlyingEyeDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -61,7 +61,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("GoblinTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
-            this->setAnimation("GoblinDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+            this->setAnimation("GoblinDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 200, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("GoblinDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -82,7 +82,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("MushroomTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
-            this->setAnimation("MushroomDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+            this->setAnimation("MushroomDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 200, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("MushroomDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -103,7 +103,7 @@ void Monster::setTextureBasedOnTypeAndState() {
             this->setAnimation("SkeletonTakeHit", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
         }
         else if (state == DYING) {
-            this->setAnimation("SkeletonDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 4, 0);
+            this->setAnimation("SkeletonDeath", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 200, 4, 0);
         }
         else if (state == DEAD) {
             this->setAnimation("SkeletonDead", direction == LEFT ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE, 0, 100, 1, 0);
@@ -213,17 +213,12 @@ bool Monster::takeDamage(float damage) {
     }
 
     this->health -= damage;
+    _healthBar->update(health, DEFAULT_MONSTER_HEALTH);
     AssetManager::GetInstance()->playSound("monster_take_damage", 9);
     if (this->health <= 0) {
         this->health = 0;
-        // Đầu tiên, cho nhân vật vào trạng thái TAKING_DAMAGE nếu chưa ở trạng thái này
-        if (state != TAKING_DAMAGE) {
-            state = TAKING_DAMAGE;
-        }
-        else {
-            // Nếu nhân vật đã ở trạng thái TAKING_DAMAGE, chuyển sang trạng thái DYING
-            state = DYING;
-        }
+        // Chuyển trực tiếp sang trạng thái DYING khi máu của quái vật bằng 0
+        state = DYING;
         AssetManager::GetInstance()->playSound("monster_death", 8);
         return true;
     }
@@ -290,10 +285,17 @@ bool Monster::update(float dt) {
     Vector2D newPosition = *this->getBody()->getPosition();
     SDL_Rect newRect = this->getBody()->getRectShape();
     this->handleColission(rect, oldRect, newRect, oldPosition, newPosition);
+
+    _healthBar->update(health, DEFAULT_MONSTER_HEALTH);
+    _healthBar->setPosition(this->getBody()->getRectShape().x - Camera::getInstance()->getViewBox().x, this->getBody()->getRectShape().y - 10 - Camera::getInstance()->getViewBox().y);
+
     return true;
 }
 
 bool Monster::render() {
+    if (state != DEAD) {
+        _healthBar->render(Game::GetInstance()->renderer);
+    }
     this->getAnimation()->DrawAnimation(this->getAnimation()->id, this->getPosition().getX() - this->getTextureWidth() / 2, this->getPosition().getY() - this->getTextureHeight() / 2,
         this->getTextureWidth(), this->getTextureHeight(), this->getAnimation()->flip);
     return true;

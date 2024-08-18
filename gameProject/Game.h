@@ -6,6 +6,7 @@ enum GameState {
     PLAYING,
     PAUSED,
     SETTINGS,
+    GAMEOVER,
     EXIT
 };
 
